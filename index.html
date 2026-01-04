@@ -390,10 +390,6 @@
 .overlay .panel > *:first-child{ margin-top: 0 !important; }
 .overlay .panel > *:last-child{ margin-bottom: 0 !important; }
 
-  /* 1) FIX crítico: la vista "Instalar" no debe ocupar espacio cuando no está activa */
-#view-instalar.view { display: none; }            /* Oculta siempre por defecto */
-#view-instalar.view.active { display: flex; }     /* Solo flex cuando la vista está activa */
-
 /* 2) Recorte global de bordes: sin espacio arriba/abajo si no hay más contenido */
 .container{ padding-bottom: 0; }                  /* Nada de espacio extra al final de la página */
 .view{ padding-top: 0; padding-bottom: 0; }       /* Sin padding vertical en cada vista */
@@ -1291,18 +1287,22 @@
       </div>
     </section>
 
-     <!-- VISTA INSTALAR -->
-    <section id="view-instalar" class="view">
-      <div class="card narrow" style="text-align:center;">
-        <h2 style="color:var(--primary);">APP GUSTAVO CASTAÑO</h2>
-        <img class="brand" alt="Instalar" src="https://res.cloudinary.com/dqqeavica/image/upload/v1766349498/slider_zcq18s.gif" />
-        <p style="font-weight:600;">Juntos Por Fresno</p>
-        <div class="btn-row" style="justify-content:center; margin-top:12px;">
-          <button id="btn-instalar" class="btn-primary" style="display:none;">Instalar la App 📲</button>
-        </div>
-        <p class="muted" style="margin-top:14px;">Si ya instalaste la App y no se inicia automáticamente, refresca en unos segundos.</p>
+    <!-- VISTA INSTALAR -->
+  <section id="view-instalar" class="view">
+    <div class="card narrow" style="text-align:center;">
+      <h2 style="color:var(--primary);">APP GUSTAVO CASTAÑO</h2>
+      <img class="brand" alt="Instalar" src="https://res.cloudinary.com/dqqeavica/image/upload/v1766959935/animacion_bxjhh7.gif" />
+      <p style="font-weight:600;">
+        Instala esta App en tu dispositivo para tener la mejor experiencia.
+      </p>
+      <div class="btn-row" style="justify-content:center; margin-top:12px;">
+        <button id="btn-instalar" class="btn-primary" style="display:none;">Instalar la App 📲</button>
       </div>
-    </section>
+      <p class="muted" style="margin-top:14px;">
+        Si ya instalaste la App y no se inicia automáticamente, refresca en unos segundos.
+      </p>
+    </div>
+  </section>
 
 
     <!-- VISTA 9: CASA SOCIAL -->
