@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <title>JHONNY PERDOMO</title>
+  <title>FIRMES POR FRESNO</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="https://res.cloudinary.com/dqqeavica/image/upload/v1759697569/Jhonny_tvexdy.png">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -24,7 +24,7 @@
       overflow-x:hidden; /* SIN scroll lateral */
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:#111;
-      background: url('https://res.cloudinary.com/dqqeavica/image/upload/v1753538930/FONDO_JHONNY_sugwsj.png') center/cover fixed no-repeat;
+      background: url('https://res.cloudinary.com/dqqeavica/image/upload/v1767566043/fondo_gustavo_qkqv6h.jpg') center/cover fixed no-repeat;
     }
     .container{ max-width: 1000px; margin: 0 auto; padding: 16px; }
 
@@ -725,7 +725,7 @@
     <!-- VISTA 1: LOGIN / REGISTRO -->
     <section id="view-login" class="view active">
       <div class="card">
-        <h1 style="color:var(--primary); text-shadow: 0 2px 2px #031732;">JHONNY PERDOMO</h1>
+        <h1 style="color:var(--primary); text-shadow: 0 2px 2px #031732;">GUSTAVO CASTAÑO</h1>
         <p class="helper"><b>Al usar esta aplicación, aceptas voluntariamente suministrar tus datos Personales.</b><br><i>Art. 5 Ley 1581 de 2012 y Decreto 1074 de 2015</i></p>
 
         <label>Documento:</label>
@@ -739,7 +739,7 @@
 </button>
         </div>
 
-        <img class="brand" alt="Brand" src="https://res.cloudinary.com/dqqeavica/image/upload/v1753538919/BANNER_JHONNY_e0yw7m.png" />
+        <img class="brand" alt="Brand" src="https://res.cloudinary.com/dqqeavica/image/upload/v1767567076/banner_yaupdc.png" />
         <p class="center muted">Copyright © <a href="https://wa.me/573103230712" target="_blank"><b>Oscar Polanía</b></a></p>
       </div>
 
@@ -753,7 +753,7 @@
           <label>Whatsapp</label>
           <input id="reg-telefono" type="tel" inputmode="numeric" placeholder="10 dígitos" />
 
-          <label>Barrio, Vereda o Conjunto de Residencia</label>
+          <label>Barrio o Vereda de Residencia</label>
           <select id="reg-residencia">
             <option value="" disabled selected>Selecciona tu Residencia</option>
 
@@ -945,7 +945,7 @@
   </div>
 
   <div class="image-center">
-    <img class="brand" alt="Brand" src="https://res.cloudinary.com/dqqeavica/image/upload/v1753538919/BANNER_JHONNY_e0yw7m.png" />
+    <img class="brand" alt="Brand" src="https://res.cloudinary.com/dqqeavica/image/upload/v1767567076/banner_yaupdc.png" />
   </div>
   <p class="center muted">Copyright © <a href="#" target="https://wa.me/573103230712"><b>Oscar Polanía</b></a></p>
 </section>
@@ -978,7 +978,7 @@
     <button class="menu-btn" id="go-referidos">Mis Referidos 🔢</button>
     <button class="menu-btn" id="btn-instalar" style="display:none;">Instalar la App 📲</button>
     <div style="height:24px"></div>
-    <img class="brand" alt="Brand" src="https://res.cloudinary.com/dqqeavica/image/upload/v1753538919/BANNER_JHONNY_e0yw7m.png" />
+    <img class="brand" alt="Brand" src="https://res.cloudinary.com/dqqeavica/image/upload/v1767567076/banner_yaupdc.png" />
     <p class="center muted">Copyright © <a href="#" target="https://wa.me/573103230712"><b>Oscar Polanía</b></a></p>
   </aside>
 </div>
@@ -1305,9 +1305,9 @@
      <!-- VISTA INSTALAR -->
     <section id="view-instalar" class="view">
       <div class="card narrow" style="text-align:center;">
-        <h2 style="color:var(--primary);">APP SUPERVISIÓN</h2>
+        <h2 style="color:var(--primary);">APP GUSTAVO CASTAÑO</h2>
         <img class="brand" alt="Instalar" src="https://res.cloudinary.com/dqqeavica/image/upload/v1766349498/slider_zcq18s.gif" />
-        <p style="font-weight:600;">Herramienta de uso exclusivo para Supervisores de la Alcaldía de Flandes</p>
+        <p style="font-weight:600;">Juntos Por Fresno</p>
         <div class="btn-row" style="justify-content:center; margin-top:12px;">
           <button id="btn-instalar" class="btn-primary" style="display:none;">Instalar la App 📲</button>
         </div>
@@ -1874,7 +1874,7 @@ function stopLoading(){
   const mpio = (currentUser?.municipio || '').trim().toUpperCase();
   const planEl = document.getElementById('u-plan');
   if (planEl){
-    planEl.textContent = (mpio === 'FLANDES' || mpio === 'A LA ESPERA')
+    planEl.textContent = (mpio === 'FRESNO' || mpio === 'A LA ESPERA')
       ? '⭐ Usuario Premium ⭐'
       : 'Usuario Estándar';
   }
@@ -2090,7 +2090,7 @@ if (!telefonoRegex.test(formData.telefono)) {
         <b>Residencia:</b> ${formData.residencia}<br>
         <b>Zona:</b> ${formData.zona || 'No definida'}<br>
         <b>Líder:</b> ${formData.referencia || 'No Registras'}<br><br>
-        <img class="brand" src="https://res.cloudinary.com/dqqeavica/image/upload/v1753538919/BANNER_JHONNY_e0yw7m.png" alt="">
+        <img class="brand" src="https://res.cloudinary.com/dqqeavica/image/upload/v1767567076/banner_yaupdc.png" alt="">
       `;
       const rs = await Swal.fire({
         icon:'info', title:'Resumen de Registro', html:resumenHtml,
@@ -2218,7 +2218,7 @@ document.getElementById('go-redes').addEventListener('click', ()=>{
       try{
         const r = await apiGet('validarLider', { documento: currentUser.documento });
         if(r && r.codigo && r.nombre){
-         const msg = "Hola 👋🏻\n\nQuiero pedirte que apoyes a nuestro gran amigo *Jhonny Perdomo*.\n\nInstala la App y regístrate aquí 👉 " + "https://tinyurl.com/app-jhonny-perdomo" + " 👈\n\nEn el campo *N° de Referido* por favor escribe el N° 👉 " + r.codigo + " 👈 (solo el número).\n\nEn esta App encontrarás muchas opciones para ayudar a tu comunidad. ¡Bendiciones!\n\nCordialmente,\n\n*" + r.nombre + "*\n> Equipo del Hacer";
+         const msg = "Hola 👋🏻\n\nQuiero pedirte que apoyes a nuestro gran amigo *Gistavo Castaño*.\n\nInstala la App y regístrate aquí 👉 " + "https://tinyurl.com/app-jhonny-perdomo" + " 👈\n\nEn el campo *N° de Referido* por favor escribe el N° 👉 " + r.codigo + " 👈 (solo el número).\n\nEn esta App encontrarás muchas opciones para ayudar a tu comunidad. ¡Bendiciones!\n\nCordialmente,\n\n*" + r.nombre + "*\n> Equipo del Hacer";
           const textoEscapado = encodeURIComponent(msg);
           const esMovil = /android|iphone|ipad|mobile/i.test(navigator.userAgent);
           if(navigator.clipboard){ navigator.clipboard.writeText(msg).catch(()=>{}); }
@@ -2542,7 +2542,7 @@ function renderContactos(items){
     // COMPARTIR PORTAL
     document.getElementById('btn-compartir').addEventListener('click', ()=>{
   const url = "https://tinyurl.com/app-jhonny-perdomo";
-  const txt = "Instala la *App de Jhonny Perdomo* 📲 y regístrate con un clic:\n" + url;
+  const txt = "Instala la *App de Gustavo Castaño* 📲 y regístrate con un clic:\n" + url;
   if(navigator.clipboard){ navigator.clipboard.writeText(txt).catch(()=>{}); }
   const enc = encodeURIComponent(txt);
   const esMovil = /android|iphone|ipad|mobile/i.test(navigator.userAgent);
@@ -2824,7 +2824,7 @@ document.getElementById('v-guardar').addEventListener('click', async ()=>{
         <b>Residencia:</b> ${body.residencia || 'Sin cambios'}<br>
         <b>Zona:</b> ${body.zona || 'Sin cambios'}<br>
         <b>Líder:</b> ${body.referencia || 'Sin cambios'}<br><br>
-        <img class="brand" src="https://res.cloudinary.com/dqqeavica/image/upload/v1753538919/BANNER_JHONNY_e0yw7m.png" alt="">
+        <img class="brand" src="https://res.cloudinary.com/dqqeavica/image/upload/v1767567076/banner_yaupdc.png" alt="">
       `;
       const rs = await Swal.fire({
         icon:'info', title:'Resumen de Actualización', html:resumenHtml,
@@ -2960,7 +2960,7 @@ document.getElementById('c-validar').addEventListener('click', async ()=>{
         <b>Residencia:</b> ${body.residencia || 'N/A'}<br>
         <b>Servicio:</b> ${body.servicio}<br>
         <b>Solicitud:</b> ${body.solicitud}<br><br>
-        <img class="brand" src="https://res.cloudinary.com/dqqeavica/image/upload/v1753538919/BANNER_JHONNY_e0yw7m.png" alt="">
+        <img class="brand" src="https://res.cloudinary.com/dqqeavica/image/upload/v1767567076/banner_yaupdc.png" alt="">
       `;
       const rs = await Swal.fire({
         icon:'info', title:'Resumen de Solicitud', html:resumenHtml,
@@ -3044,7 +3044,7 @@ document.getElementById('c-validar').addEventListener('click', async ()=>{
         <b>Aspecto Económico:</b><br>${(body.economico||'').replace(/\n/g,'<br>') || '<i>Sin ideas</i>'}<br><br>
         <b>Aspecto Ambiental:</b><br>${(body.ambiental||'').replace(/\n/g,'<br>') || '<i>Sin ideas</i>'}<br><br>
         <b>Otros:</b><br>${(body.otros||'').replace(/\n/g,'<br>') || '<i>Sin ideas</i>'}<br><br>
-        <img class="brand" src="https://res.cloudinary.com/dqqeavica/image/upload/v1753538919/BANNER_JHONNY_e0yw7m.png" alt="">
+        <img class="brand" src="https://res.cloudinary.com/dqqeavica/image/upload/v1767567076/banner_yaupdc.png" alt="">
       `;
       const rs = await Swal.fire({
         icon:'info', title:'Resumen de Ideas', html:resumenHtml,
@@ -3413,7 +3413,7 @@ function updateReferidosSummary(list){
 
 function voteClass(v){
   const val = String(v||'').trim().toUpperCase();
-  if(val === 'FLANDES') return 'green';
+  if(val === 'FRESNO') return 'green';
   if(val === 'SIN CONSULTAR') return 'blue';
   if(val === 'A LA ESPERA') return 'gray';
   if(val === 'POR CONFIRMAR') return 'orange';
