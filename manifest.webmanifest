@@ -3,7 +3,7 @@
   "name": "GUSTAVO CASTAÑO",
   "short_name": "GUSTAVO CASTAÑO",
   "start_url": "/App-Gustavo-Castano/",
-  "scope": "//App-Gustavo-Castano/",
+  "scope": "/App-Gustavo-Castano/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#06402B",
