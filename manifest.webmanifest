@@ -1,9 +1,9 @@
 {
-  "id": "/Gustavo-Castano/",
+  "id": "/App-Gustavo-Castano/",
   "name": "GUSTAVO CASTAÑO",
   "short_name": "GUSTAVO CASTAÑO",
   "start_url": "/App-Gustavo-Castano/",
-  "scope": "/Gustavo-Castano/",
+  "scope": "//App-Gustavo-Castano/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#06402B",
@@ -15,7 +15,7 @@
     {
       "platform": "webapp",
       "url": "https://botheart911.github.io/App-Gustavo-Castano/manifest.webmanifest",
-      "id": "/supervision/"
+      "id": "/App-Gustavo-Castan/"
     }
   ],
 
