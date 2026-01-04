@@ -339,27 +339,16 @@
 }
 
 
-    /* Vista Instalar centrada, sin card */
-#view-instalar{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  min-height: calc(100dvh - 32px);
-  text-align:center;
-}
-#view-instalar .install-wrap{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:12px;
-  padding: 8px;
-}
-#view-instalar .brand{ width:220px; border-radius:8px; }
-#view-instalar .tagline{
-  font-weight:800;
-  color:#111;
-  margin: 0 0 4px;
-}
+  /* Botón instalar PWA */
+  #btn-instalar{
+    border-radius:999px;
+    font-size:1rem;
+    padding:12px 18px;
+  }
+
+  @media (max-width:700px){
+    .btn-row{ flex-direction:column; }
+  }
 
     /* Botón con icono */
 .btn-with-icon{
