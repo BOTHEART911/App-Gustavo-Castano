@@ -1851,7 +1851,6 @@ function stopLoading(){
   document.getElementById('u-doc').textContent = currentUser?.documento || '';
   document.getElementById('u-cel').textContent = currentUser?.telefono || 'SIN REGISTRO';
   document.getElementById('u-res').textContent = currentUser?.residencia || 'SIN REGISTRO';
-  document.getElementById('u-zona').textContent = currentUser?.zona || 'SIN REGISTRO';
   document.getElementById('u-ref').textContent = currentUser?.referencia || 'N/A';
   document.getElementById('u-mpio').textContent = currentUser?.municipio || 'SIN REGISTRO';
   document.getElementById('u-puesto').textContent = currentUser?.puesto || 'SIN REGISTRO';
@@ -1877,7 +1876,6 @@ function stopLoading(){
             nombre: res.nombre,
             telefono: res.telefono || '',
             residencia: res.residencia || '',
-            zona: res.zona || '',
             referencia: res.referencia || '',
             municipio: res.municipio || '',
             puesto: res.puesto || '',
