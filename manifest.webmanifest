@@ -6,7 +6,7 @@
   "scope": "/App-Gustavo-Castano/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#06402B",
+  "theme_color": "#ff7c39",
   "capture_links": "existing-client-navigate",
   "launch_handler": { "client_mode": "navigate-existing" },
 
