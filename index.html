@@ -46,7 +46,12 @@
     }
     h1,h2{ margin: 8px 0 12px; text-align:center; }
     p.helper{ color:#666; font-size:.95rem; text-align:center; margin:8px 0 16px; }
-    label{ display:block; font-weight:700; margin: 10px 0 6px; color:#007BFF; }
+    label{
+  display:block;
+  font-weight:700;
+  margin: 10px 0 6px;
+  color: var(--primary); /* ahora usa #ff7c39 */
+}
     input, select, textarea, button{
       width:100%; padding:12px; box-sizing:border-box;
       border:1.5px solid #ccc; border-radius:8px; background:#fff;
@@ -72,8 +77,12 @@
     }
     .danger{ background:#e11; border-color:#e11; color:#fff; }
 
- /* OVERLAY BANNER LATERAL */
-.overlay{ position: fixed; inset: 0; pointer-events:none; }
+/* OVERLAY BANNER LATERAL */
+.overlay{
+  position: fixed;
+  inset: 0;
+  pointer-events:none;
+}
 .overlay .scrim{
   position:absolute;
   inset:0;
@@ -87,7 +96,7 @@
   left:0;
   width:min(360px, 90vw);
   height:100%;
-  background:#de2e03; /* nuevo color del overlay */
+  background:#de2e03; /* color del overlay */
   color:#fff;
   padding:16px 16px 8px 16px;
   box-sizing:border-box;
@@ -100,7 +109,7 @@
   min-height: 0;
 }
 
-/* Botones del menú lateral: ya toman var(--primary) naranjas */
+/* Botones del menú lateral en naranja */
 .menu-btn{
   background: var(--primary);
   color:#fff;
@@ -113,14 +122,11 @@
 .menu-btn:hover{
   background: var(--primary-2);
 }
-    .overlay.open{ pointer-events:auto; }
-    .overlay.open .scrim{ opacity:1; }
-    .overlay.open .panel{ transform: translateX(0); }
-    .panel h3{ margin: 4px 0 8px; text-align:center; }
-    .menu-btn{
-      background:#7de3ef; color:#000; border:0; font-weight:800;
-      border-radius:999px; padding:12px; box-shadow: 0 6px 12px rgba(0,0,0,.18);
-    }
+
+.overlay.open{ pointer-events:auto; }
+.overlay.open .scrim{ opacity:1; }
+.overlay.open .panel{ transform: translateX(0); }
+.panel h3{ margin: 4px 0 8px; text-align:center; }
    
     /* VIDEO */
     .video-card{
