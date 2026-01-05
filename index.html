@@ -2287,11 +2287,7 @@ document.getElementById('go-redes').addEventListener('click', ()=>{
       try{
         const r = await apiGet('validarLider', { documento: currentUser.documento });
         if(r && r.codigo && r.nombre){
-         const msg = "Hola 👋🏻\n\nQuiero pedirte que apoyes a nuestro gran amigo *Gustavo Castaño*.\n\n
-           Instala la App y regístrate aquí 👉 " + "https://tinyurl.com/APP-GUSTAVO-CASTANO" + " 👈\n\n
-            En el campo *Nombre del Líder* por favor escribe y selecciona mi nombre.\n\n
-            En esta App encontrarás muchas opciones para ayudar a tu comunidad. ¡Bendiciones!\n\n
-              Cordialmente,\n\n*" + r.nombre + "*\n> Equipo Firmes por Fresno";
+         const msg = "Hola 👋🏻\n\nQuiero pedirte que apoyes a nuestro gran amigo *Gustavo Castaño*.\n\nInstala la App y regístrate aquí 👉 " + "https://tinyurl.com/APP-GUSTAVO-CASTANO" + " 👈\n\nEn el campo *Nombre del Líder* por favor escribe y selecciona mi nombre.\n\nEn esta App encontrarás muchas opciones para ayudar a tu comunidad. ¡Bendiciones!\n\nCordialmente,\n\n*" + r.nombre + "*\n> Equipo Firmes por Fresno";
           const textoEscapado = encodeURIComponent(msg);
           const esMovil = /android|iphone|ipad|mobile/i.test(navigator.userAgent);
           if(navigator.clipboard){ navigator.clipboard.writeText(msg).catch(()=>{}); }
