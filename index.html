@@ -72,18 +72,47 @@
     }
     .danger{ background:#e11; border-color:#e11; color:#fff; }
 
-   /* OVERLAY BANNER LATERAL */
-    .overlay{ position: fixed; inset: 0; pointer-events:none; }
-    .overlay .scrim{ position:absolute; inset:0; background:var(--scrim);
-      opacity:0; transition:opacity .25s ease;
-    }
-    .overlay .panel{
-      position:absolute; top:0; left:0; width:min(360px, 90vw); height:100%;
-      background:#de2e03; color:#fff; padding:16px 16px 8px 16px; box-sizing:border-box;
-      transform: translateX(-100%); transition: transform .25s ease;
-      display:flex; flex-direction:column; gap:10px; overflow-y:auto;
-      min-height: 0;
-    }
+ /* OVERLAY BANNER LATERAL */
+.overlay{ position: fixed; inset: 0; pointer-events:none; }
+.overlay .scrim{
+  position:absolute;
+  inset:0;
+  background:var(--scrim);
+  opacity:0;
+  transition:opacity .25s ease;
+}
+.overlay .panel{
+  position:absolute;
+  top:0;
+  left:0;
+  width:min(360px, 90vw);
+  height:100%;
+  background:#de2e03; /* nuevo color del overlay */
+  color:#fff;
+  padding:16px 16px 8px 16px;
+  box-sizing:border-box;
+  transform: translateX(-100%);
+  transition: transform .25s ease;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  overflow-y:auto;
+  min-height: 0;
+}
+
+/* Botones del menú lateral: ya toman var(--primary) naranjas */
+.menu-btn{
+  background: var(--primary);
+  color:#fff;
+  border:0;
+  font-weight:800;
+  border-radius:999px;
+  padding:12px;
+  box-shadow: 0 6px 12px rgba(0,0,0,.18);
+}
+.menu-btn:hover{
+  background: var(--primary-2);
+}
     .overlay.open{ pointer-events:auto; }
     .overlay.open .scrim{ opacity:1; }
     .overlay.open .panel{ transform: translateX(0); }
@@ -692,6 +721,30 @@
   font-size:.8rem;          /* mismo tamaño que el subtítulo */
   margin:0 0 10px;
   text-align: justify;
+}
+
+  /* color naranja en las alertas */
+  .swal2-confirm{
+  background-color: #ff7c39 !important;
+  border-color: #ff7c39 !important;
+  color:#fff !important;
+}
+.swal2-confirm:hover{
+  background-color: #fc8b08 !important;
+  border-color: #fc8b08 !important;
+}
+
+.swal2-cancel,
+.swal2-deny{
+  background-color: #ffffff !important;
+  border: 2px solid #ff7c39 !important;
+  color: #ff7c39 !important;
+}
+.swal2-cancel:hover,
+.swal2-deny:hover{
+  background-color: #fc8b08 !important;
+  border-color: #fc8b08 !important;
+  color:#fff !important;
 }
 </style>
   
