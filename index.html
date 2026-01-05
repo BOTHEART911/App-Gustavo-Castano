@@ -13,8 +13,8 @@
 
 <style>
 :root{
-      --primary:#007BFF;
-      --primary-2:#0056b3;
+      --primary:#ff7c39;
+      --primary-2:#fc8b08;
       --ok:#16a34a;
       --error:#dc2626;
       --scrim:rgba(0,0,0,.35);
@@ -72,14 +72,14 @@
     }
     .danger{ background:#e11; border-color:#e11; color:#fff; }
 
-    /* OVERLAY BANNER LATERAL */
+   /* OVERLAY BANNER LATERAL */
     .overlay{ position: fixed; inset: 0; pointer-events:none; }
     .overlay .scrim{ position:absolute; inset:0; background:var(--scrim);
       opacity:0; transition:opacity .25s ease;
     }
     .overlay .panel{
       position:absolute; top:0; left:0; width:min(360px, 90vw); height:100%;
-      background:#2f6bdb; color:#fff; padding:16px 16px 8px 16px; box-sizing:border-box;
+      background:#de2e03; color:#fff; padding:16px 16px 8px 16px; box-sizing:border-box;
       transform: translateX(-100%); transition: transform .25s ease;
       display:flex; flex-direction:column; gap:10px; overflow-y:auto;
       min-height: 0;
@@ -2124,6 +2124,32 @@ if (!telefonoRegex.test(formData.telefono)) {
     document.getElementById('btn-open-menu').addEventListener('click', ()=> overlay.classList.add('open'));
     document.getElementById('btn-ovl-back').addEventListener('click', ()=> overlay.classList.remove('open'));
     document.getElementById('ovlClose').addEventListener('click', ()=> overlay.classList.remove('open'));
+
+    // Sonido login para todos los botones del menú lateral
+    (function(){
+      const idsMenu = [
+        'go-feed',
+        'go-solicitud',
+        'go-ideas',
+        'go-libretacontactos',
+        'go-comerciantes',
+        'go-sede',
+        'go-redes',
+        'go-asistencia',
+        'go-actualizacion',
+        'go-consultar',
+        'go-lider',
+        'go-referidos'
+      ];
+      idsMenu.forEach(function(id){
+        const el = document.getElementById(id);
+        if(el){
+          el.addEventListener('click', function(){
+            playSoundOnce(SOUNDS.login);
+          }, { capture:true });
+        }
+      });
+    })();
 
     document.getElementById('btn-logout').addEventListener('click', ()=>{
   playSoundOnce(SOUNDS.logout);
