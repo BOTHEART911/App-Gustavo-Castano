@@ -4112,577 +4112,483 @@ document.getElementById('ref-volver').addEventListener('click', ()=> showView('v
       setup(updInput, updList);
     })();
 
-    /* ================== NUESTRO CALENDARIO (ciudadano) ================== */
+        /* ================== NUESTRO CALENDARIO (ciudadano) ================== */
 
-const CAL2_API_ACTION_LIST = 'listeventoscalendariociudadano';
-const CAL2_API_ACTION_GET  = 'geteventocalendariociudadano';
+    let CAL2_EVENTS = [];
+    let CAL2_VIEW = 'month'; // month | week | day | year
+    let CAL2_CURSOR = new Date();
 
-let CAL2_EVENTS = [];
-let CAL2_CURRENT_VIEW = 'month';
-let CAL2_CURRENT_DATE = new Date();
-let CAL2_SELECTED_EVENT = null;
-
-const CAL2_MONTHS_SHORT = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
-const CAL2_WEEKDAYS_SHORT = ['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
-
-function cal2Pad2(n){
-  return String(n).padStart(2,'0');
-}
-function cal2FormatDMY(d){
-  if(!d) return '';
-  const dd = cal2Pad2(d.getDate());
-  const mm = cal2Pad2(d.getMonth()+1);
-  const yy = d.getFullYear();
-  return dd + '/' + mm + '/' + yy;
-}
-function cal2ParseDMY(str){
-  if(!str) return null;
-  const p = String(str).split('/');
-  if(p.length !== 3) return null;
-  const d = parseInt(p[0],10);
-  const m = parseInt(p[1],10);
-  const y = parseInt(p[2],10);
-  if(!d || !m || !y) return null;
-  const dt = new Date(y,m-1,d);
-  if(isNaN(dt.getTime())) return null;
-  return dt;
-}
-function cal2MinutesFromTimeStr24(str){
-  if(!str) return 0;
-  const parts = String(str).split(':');
-  const h = parseInt(parts[0]||'0',10);
-  const m = parseInt(parts[1]||'0',10);
-  if(isNaN(h) || isNaN(m)) return 0;
-  return h*60 + m;
-}
-function cal2Time24ToAmPm(str){
-  if(!str) return '';
-  const parts = String(str).split(':');
-  let h = parseInt(parts[0]||'0',10);
-  const m = parseInt(parts[1]||'0',10);
-  if(isNaN(h) || isNaN(m)) return '';
-  let suf = 'AM';
-  if(h >= 12){
-    suf = 'PM';
-    if(h > 12) h = h - 12;
-  }
-  if(h === 0){
-    h = 12;
-    suf = 'AM';
-  }
-  const hStr = String(h);
-  const mStr = cal2Pad2(m);
-  return hStr + ':' + mStr + ' ' + suf;
-}
-function cal2EventMatchesFilter(ev, query){
-  if(!query) return true;
-  const q = query.toLowerCase();
-  return [
-    ev.nombreEvento,
-    ev.lugar,
-    ev.detalles,
-    ev.zona
-  ].some(v => String(v||'').toLowerCase().includes(q));
-}
-function cal2UpdateTitle(){
-  const titleEl = document.getElementById('cal2-title-text');
-  if(!titleEl) return;
-  if(CAL2_CURRENT_VIEW === 'year'){
-    titleEl.textContent = CAL2_CURRENT_DATE.getFullYear();
-    return;
-  }
-  if(CAL2_CURRENT_VIEW === 'week'){
-    const start = cal2StartOfWeek(CAL2_CURRENT_DATE);
-    const end = cal2EndOfWeek(CAL2_CURRENT_DATE);
-    const label = CAL2_MONTHS_SHORT[start.getMonth()] + ' ' + start.getDate() +
-      ' – ' + CAL2_MONTHS_SHORT[end.getMonth()] + ' ' + end.getDate() +
-      ' ' + end.getFullYear();
-    titleEl.textContent = label;
-    return;
-  }
-  if(CAL2_CURRENT_VIEW === 'day'){
-    const d = CAL2_CURRENT_DATE;
-    const label = d.getDate() + ' ' + CAL2_MONTHS_SHORT[d.getMonth()] + ' ' + d.getFullYear();
-    titleEl.textContent = label;
-    return;
-  }
-  const d = CAL2_CURRENT_DATE;
-  titleEl.textContent = d.toLocaleDateString('es-CO', { month:'long', year:'numeric' }).toUpperCase();
-}
-function cal2StartOfWeek(d){
-  const dt = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-  const day = dt.getDay();
-  const diff = (day + 7 - 0) % 7;
-  dt.setDate(dt.getDate() - diff);
-  return dt;
-}
-function cal2EndOfWeek(d){
-  const start = cal2StartOfWeek(d);
-  const end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 6);
-  return end;
-}
-function cal2EventsOnDay(dmy){
-  return CAL2_EVENTS.filter(ev => ev.fechaEvento === dmy);
-}
-function cal2NormalizeEvent(ev){
-  const out = Object.assign({}, ev||{});
-  out.codigo        = String(out.codigo||'');
-  out.fechaEvento   = String(out.fechaEvento||'');
-  out.nombreEvento  = String(out.nombreEvento||'');
-  out.estado        = String(out.estado||'').toUpperCase();
-  out.horaInicio    = String(out.horaInicio||'');
-  out.horaTerminacion = String(out.horaTerminacion||'');
-  out.detalles      = String(out.detalles||'');
-  out.requerimientos= String(out.requerimientos||'');
-  out.otros         = String(out.otros||'');
-  out.lugar         = String(out.lugar||'');
-  out.zona          = String(out.zona||'');
-  out.nombre        = String(out.nombre||'');
-  out.contacto      = String(out.contacto||'');
-  return out;
-}
-async function cal2LoadEvents(){
-  try{
-    const list = await apiGet('listeventoscalendariociudadano', {});
-    CAL2_EVENTS = Array.isArray(list) ? list.map(ev => cal2NormalizeEvent(ev)) : [];
-  }catch(e){
-    CAL2_EVENTS = [];
-    Swal.fire({icon:'error',title:'Error cargando calendario',text:String(e.message||e)});
-  }
-}
-function cal2Render(){
-  const cont = document.getElementById('cal2-container');
-  if(!cont) return;
-  const filterVal = document.getElementById('cal2-filter-input')?.value.trim().toLowerCase() || '';
-  cont.innerHTML = '';
-  cal2UpdateTitle();
-
-  if(CAL2_CURRENT_VIEW === 'month'){
-    cal2RenderMonth(cont, filterVal);
-  }else if(CAL2_CURRENT_VIEW === 'week'){
-    cal2RenderWeek(cont, filterVal);
-  }else if(CAL2_CURRENT_VIEW === 'day'){
-    cal2RenderDay(cont, filterVal);
-  }else if(CAL2_CURRENT_VIEW === 'year'){
-    cal2RenderYear(cont, filterVal);
-  }
-}
-function cal2RenderMonth(cont, filterVal){
-  const header = document.createElement('div');
-  header.className = 'cal2-weekdays';
-  CAL2_WEEKDAYS_SHORT.forEach(d => {
-    const el = document.createElement('div');
-    el.className = 'cal2-weekday';
-    el.textContent = d;
-    header.appendChild(el);
-  });
-  cont.appendChild(header);
-
-  const grid = document.createElement('div');
-  grid.className = 'cal2-month-grid';
-
-  const year = CAL2_CURRENT_DATE.getFullYear();
-  const month = CAL2_CURRENT_DATE.getMonth();
-  const firstDay = new Date(year,month,1);
-  const startWeekDay = firstDay.getDay();
-  const daysInMonth = new Date(year,month+1,0).getDate();
-
-  const prevMonthDays = (startWeekDay + 7 - 0) % 7;
-  const totalCells = prevMonthDays + daysInMonth;
-  const cells = totalCells <= 35 ? 35 : 42;
-
-  const todayDMY = cal2FormatDMY(new Date());
-
-  for(let i=0; i<cells; i++){
-    const cell = document.createElement('div');
-    cell.className = 'cal2-day-cell';
-    const dayOffset = i - prevMonthDays + 1;
-    let cellDate;
-    let inThisMonth = true;
-
-    if(dayOffset < 1){
-      cellDate = new Date(year, month, dayOffset);
-      inThisMonth = false;
-    }else if(dayOffset > daysInMonth){
-      cellDate = new Date(year, month, dayOffset);
-      inThisMonth = false;
-    }else{
-      cellDate = new Date(year, month, dayOffset);
+    function parseDMY(str){
+      if(!str) return null;
+      const parts = String(str).split('/');
+      if(parts.length !== 3) return null;
+      const d = parseInt(parts[0],10);
+      const m = parseInt(parts[1],10);
+      const y = parseInt(parts[2],10);
+      if(!d || !m || !y) return null;
+      const dt = new Date(y, m-1, d);
+      return isNaN(dt.getTime()) ? null : dt;
     }
 
-    const iso = cal2FormatDMY(cellDate);
-    if(!inThisMonth) cell.classList.add('other-month');
-
-    const headerNum = document.createElement('div');
-    headerNum.className = 'cal2-day-number';
-
-    if(iso === todayDMY){
-      headerNum.classList.add('today');
-      headerNum.textContent = cellDate.getDate();
-    }else{
-      headerNum.textContent = cellDate.getDate();
+    function formatHoraCorta(hhmmss){
+      if(!hhmmss) return '';
+      const s = String(hhmmss).trim();
+      const m = s.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+      if(!m) return s;
+      let h = parseInt(m[1],10);
+      const mm = m[2];
+      if(isNaN(h)) return s;
+      const suf = h >= 12 ? 'PM' : 'AM';
+      if(h === 0) h = 12;
+      else if(h > 12) h = h - 12;
+      return h + ':' + mm + ' ' + suf;
     }
 
-    cell.appendChild(headerNum);
+    function sameDay(a,b){
+      return a.getFullYear()===b.getFullYear() &&
+             a.getMonth()===b.getMonth() &&
+             a.getDate()===b.getDate();
+    }
 
-    const events = cal2EventsOnDay(iso).filter(ev => cal2EventMatchesFilter(ev, filterVal));
-    events.sort((a,b)=> cal2MinutesFromTimeStr24(a.horaInicio||'') - cal2MinutesFromTimeStr24(b.horaInicio||''));
+    function betweenDays(d, start, end){
+      const t = new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime();
+      const s = new Date(start.getFullYear(),start.getMonth(),start.getDate()).getTime();
+      const e = new Date(end.getFullYear(),end.getMonth(),end.getDate()).getTime();
+      return t>=s && t<=e;
+    }
 
-    events.forEach(ev => {
-      const chip = document.createElement('div');
-      chip.className = 'cal2-event-chip';
+    function normalizarEventosCiudadano(raw){
+      if(!Array.isArray(raw)) return [];
+      const out = [];
+      for(const r of raw){
+        const f = parseDMY(r.fechaEvento);
+        if(!f) continue;
+        out.push({
+          codigo: String(r.codigo || ''),
+          fecha: f,
+          estado: String(r.estado || '').toUpperCase(),
+          nombreEvento: String(r.nombreEvento || ''),
+          fechaEvento: String(r.fechaEvento || ''),
+          horaInicio: formatHoraCorta(r.horaInicio || ''),
+          horaTerminacion: formatHoraCorta(r.horaTerminacion || ''),
+          detalles: String(r.detalles || ''),
+          requerimientos: String(r.requerimientos || ''),
+          otros: String(r.otros || ''),
+          lugar: String(r.lugar || ''),
+          zona: String(r.zona || ''),
+          nombre: String(r.nombre || ''),
+          contacto: String(r.contacto || '')
+        });
+      }
+      return out;
+    }
 
-      const title = document.createElement('span');
-      title.className = 'cal2-evt-title';
-      title.textContent = ev.nombreEvento || '';
+    async function cargarCalendarioCiudadano(){
+      const data = await apiGet('listeventoscalendariociudadano');
+      CAL2_EVENTS = normalizarEventosCiudadano(data);
+      CAL2_VIEW = 'month';
+      CAL2_CURSOR = new Date();
+      renderCalendarioCiudadano();
+    }
 
-      const time = document.createElement('span');
-      time.className = 'cal2-evt-time';
-      const hi = cal2Time24ToAmPm(ev.horaInicio||'');
-      const hf = cal2Time24ToAmPm(ev.horaTerminacion||'');
-      time.textContent = (hi || hf) ? (hi + ' - ' + hf) : '';
+    function getCal2FilterText(){
+      const el = document.getElementById('cal2-filter');
+      return el ? String(el.value || '').toLowerCase() : '';
+    }
 
-      chip.appendChild(title);
-      chip.appendChild(time);
-      chip.addEventListener('click', ()=> cal2OpenEventForView(ev.codigo));
-      cell.appendChild(chip);
-    });
-
-    grid.appendChild(cell);
-  }
-  cont.appendChild(grid);
-}
-function cal2RenderDay(cont, filterVal){
-  const header = document.createElement('div');
-  header.className = 'cal2-day-header-row';
-  const d = CAL2_CURRENT_DATE;
-  header.textContent = d.toLocaleDateString('es-CO',{ weekday:'long', day:'numeric', month:'long', year:'numeric' }).toUpperCase();
-  cont.appendChild(header);
-
-  const body = document.createElement('div');
-  body.className = 'cal2-day-body';
-
-  const iso = cal2FormatDMY(d);
-  const events = cal2EventsOnDay(iso).filter(ev => cal2EventMatchesFilter(ev, filterVal));
-  events.sort((a,b)=> cal2MinutesFromTimeStr24(a.horaInicio||'') - cal2MinutesFromTimeStr24(b.horaInicio||''));
-
-  if(!events.length){
-    const p = document.createElement('p');
-    p.className = 'muted';
-    p.textContent = 'Sin eventos para este día.';
-    body.appendChild(p);
-  }else{
-    events.forEach(ev => {
-      const chip = document.createElement('div');
-      chip.className = 'cal2-event-chip';
-
-      const title = document.createElement('span');
-      title.className = 'cal2-evt-title';
-      title.textContent = ev.nombreEvento || '';
-
-      const time = document.createElement('span');
-      time.className = 'cal2-evt-time';
-      const hi = cal2Time24ToAmPm(ev.horaInicio||'');
-      const hf = cal2Time24ToAmPm(ev.horaTerminacion||'');
-      time.textContent = (hi || hf) ? (hi + ' - ' + hf) : '';
-
-      const desc = document.createElement('div');
-      desc.style.fontSize = '.72rem';
-      desc.textContent = ev.lugar || '';
-
-      chip.appendChild(title);
-      chip.appendChild(time);
-      chip.appendChild(desc);
-
-      chip.addEventListener('click', ()=> cal2OpenEventForView(ev.codigo));
-      body.appendChild(chip);
-    });
-  }
-
-  cont.appendChild(body);
-}
-function cal2RenderWeek(cont, filterVal){
-  const start = cal2StartOfWeek(CAL2_CURRENT_DATE);
-  const end = cal2EndOfWeek(CAL2_CURRENT_DATE);
-
-  const header = document.createElement('div');
-  header.className = 'cal2-week-header-row';
-  header.textContent = 'Semana del ' +
-    start.getDate() + ' ' + CAL2_MONTHS_SHORT[start.getMonth()] +
-    ' al ' +
-    end.getDate() + ' ' + CAL2_MONTHS_SHORT[end.getMonth()] +
-    ' ' + end.getFullYear();
-  cont.appendChild(header);
-
-  const body = document.createElement('div');
-  body.className = 'cal2-week-body';
-
-  for(let i=0;i<7;i++){
-    const d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
-    const iso = cal2FormatDMY(d);
-
-    const row = document.createElement('div');
-    row.style.borderRadius = '10px';
-    row.style.padding = '6px 8px';
-    row.style.background = '#f9fafb';
-    row.style.marginBottom = '6px';
-
-    const head = document.createElement('div');
-    head.style.display = 'flex';
-    head.style.alignItems = 'center';
-    head.style.justifyContent = 'space-between';
-
-    const left = document.createElement('span');
-    left.style.fontWeight = '700';
-    left.style.fontSize = '.8rem';
-    left.textContent = CAL2_WEEKDAYS_SHORT[d.getDay()] + ' ' + d.getDate() + ' ' + CAL2_MONTHS_SHORT[d.getMonth()];
-
-    head.appendChild(left);
-    row.appendChild(head);
-
-    const evs = cal2EventsOnDay(iso).filter(ev => cal2EventMatchesFilter(ev, filterVal));
-    evs.sort((a,b)=> cal2MinutesFromTimeStr24(a.horaInicio||'') - cal2MinutesFromTimeStr24(b.horaInicio||''));
-
-    if(!evs.length){
-      const p = document.createElement('p');
-      p.className = 'muted';
-      p.style.fontSize = '.72rem';
-      p.textContent = 'Sin eventos';
-      row.appendChild(p);
-    }else{
-      evs.forEach(ev => {
-        const chip = document.createElement('div');
-        chip.className = 'cal2-event-chip';
-
-        const title = document.createElement('span');
-        title.className = 'cal2-evt-title';
-        title.textContent = ev.nombreEvento || '';
-
-        const time = document.createElement('span');
-        time.className = 'cal2-evt-time';
-        const hi = cal2Time24ToAmPm(ev.horaInicio||'');
-        const hf = cal2Time24ToAmPm(ev.horaTerminacion||'');
-        time.textContent = (hi || hf) ? (hi + ' - ' + hf) : '';
-
-        chip.appendChild(title);
-        chip.appendChild(time);
-        chip.addEventListener('click', ()=> cal2OpenEventForView(ev.codigo));
-        row.appendChild(chip);
+    function aplicarFiltroEventos(evts){
+      const q = getCal2FilterText();
+      if(!q) return evts;
+      return evts.filter(e=>{
+        const txt = (e.nombreEvento + ' ' + e.lugar + ' ' + e.zona).toLowerCase();
+        return txt.indexOf(q) !== -1;
       });
     }
 
-    body.appendChild(row);
-  }
+    function renderCalendarioCiudadano(){
+      const root = document.getElementById('cal2-root');
+      const titleEl = document.getElementById('cal2-title');
+      if(!root || !titleEl) return;
+      root.innerHTML = '';
 
-  cont.appendChild(body);
-}
-function cal2RenderYear(cont, filterVal){
-  const grid = document.createElement('div');
-  grid.className = 'cal2-year-grid';
+      const view = CAL2_VIEW;
+      const base = CAL2_CURSOR;
+      const today = new Date();
+      const events = aplicarFiltroEventos(CAL2_EVENTS);
 
-  const year = CAL2_CURRENT_DATE.getFullYear();
-  const eventsByMonth = {};
-  CAL2_EVENTS.forEach(ev => {
-    const d = cal2ParseDMY(ev.fechaEvento);
-    if(!d || d.getFullYear() !== year) return;
-    const m = d.getMonth();
-    if(!eventsByMonth[m]) eventsByMonth[m] = [];
-    if(cal2EventMatchesFilter(ev, filterVal)){
-      eventsByMonth[m].push(ev);
-    }
-  });
+      const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+      const weekdayNames = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 
-  for(let m=0;m<12;m++){
-    const box = document.createElement('div');
-    box.className = 'cal2-year-month';
+      if(view === 'month'){
+        const year = base.getFullYear();
+        const month = base.getMonth();
+        titleEl.textContent = monthNames[month] + ' ' + year;
 
-    const h4 = document.createElement('h4');
-    h4.textContent = new Date(year,m,1).toLocaleDateString('es-CO',{ month:'long' }).toUpperCase();
-    box.appendChild(h4);
+        const first = new Date(year, month, 1);
+        const startDay = first.getDay();
+        const gridStart = new Date(year, month, 1 - startDay);
+        const monthGrid = document.createElement('div');
+        monthGrid.className = 'cal2-month-grid';
 
-    const table = document.createElement('table');
-    const thead = document.createElement('thead');
-    const trh = document.createElement('tr');
-    CAL2_WEEKDAYS_SHORT.forEach(d => {
-      const th = document.createElement('th');
-      th.textContent = d.charAt(0);
-      trh.appendChild(th);
-    });
-    thead.appendChild(trh);
-    table.appendChild(thead);
+        const wd = document.createElement('div');
+        wd.className = 'cal2-weekdays';
+        for(let i=0;i<7;i++){
+          const d = document.createElement('div');
+          d.className = 'cal2-weekday';
+          d.textContent = weekdayNames[i];
+          wd.appendChild(d);
+        }
+        root.appendChild(wd);
 
-    const tbody = document.createElement('tbody');
-    const first = new Date(year,m,1);
-    const startDay = first.getDay();
-    const daysInMonth = new Date(year,m+1,0).getDate();
+        for(let cell=0; cell<42; cell++){
+          const d = new Date(gridStart.getFullYear(),gridStart.getMonth(),gridStart.getDate() + cell);
+          const cellEl = document.createElement('div');
+          cellEl.className = 'cal2-day-cell';
+          if(d.getMonth() !== month) cellEl.classList.add('other-month');
 
-    let day = 1;
-    let done = false;
-    while(!done){
-      const tr = document.createElement('tr');
-      for(let wd=0; wd<7; wd++){
-        const td = document.createElement('td');
-        if(wd < startDay && day === 1){
-          td.textContent = '';
-        }else if(day > daysInMonth){
-          td.textContent = '';
-          done = true;
-        }else{
-          td.textContent = day;
-          const dmy = cal2FormatDMY(new Date(year,m,day));
-          const hasEvent = (eventsByMonth[m]||[]).some(ev => ev.fechaEvento === dmy);
-          if(hasEvent){
-            const dot = document.createElement('span');
-            dot.className = 'cal2-year-dot';
-            td.appendChild(dot);
+          const num = document.createElement('div');
+          num.className = 'cal2-day-number' + (sameDay(d,today) ? ' today' : '');
+          num.textContent = d.getDate();
+          cellEl.appendChild(num);
+
+          const dayEvents = events.filter(ev => sameDay(ev.fecha, d));
+          for(const ev of dayEvents){
+            const chip = document.createElement('div');
+            chip.className = 'cal2-event-chip';
+            chip.dataset.codigo = ev.codigo;
+            const t1 = document.createElement('span');
+            t1.className = 'cal2-evt-title';
+            t1.textContent = ev.nombreEvento || '(Sin título)';
+            const t2 = document.createElement('span');
+            t2.className = 'cal2-evt-time';
+            const timeTxt = (ev.horaInicio || ev.horaTerminacion) ? (ev.horaInicio + (ev.horaTerminacion ? ' - ' + ev.horaTerminacion : '')) : '';
+            t2.textContent = timeTxt;
+            chip.appendChild(t1);
+            if(timeTxt) chip.appendChild(t2);
+            chip.addEventListener('click', ()=> abrirDetalleEventoCiudadano(ev));
+            cellEl.appendChild(chip);
           }
-          day++;
+
+          monthGrid.appendChild(cellEl);
         }
-        tr.appendChild(td);
+        root.appendChild(monthGrid);
+        return;
       }
-      tbody.appendChild(tr);
-    }
 
-    table.appendChild(tbody);
-    box.appendChild(table);
-    grid.appendChild(box);
-  }
+      if(view === 'week'){
+        const cur = new Date(base.getFullYear(),base.getMonth(),base.getDate());
+        const dayIdx = cur.getDay();
+        const weekStart = new Date(cur.getFullYear(),cur.getMonth(),cur.getDate() - dayIdx);
+        const weekEnd = new Date(weekStart.getFullYear(),weekStart.getMonth(),weekStart.getDate() + 6);
+        titleEl.textContent =
+          'Semana del ' +
+          weekStart.getDate() + ' ' + monthNames[weekStart.getMonth()] +
+          ' al ' +
+          weekEnd.getDate() + ' ' + monthNames[weekEnd.getMonth()] +
+          ' ' + weekEnd.getFullYear();
 
-  cont.appendChild(grid);
-}
-async function cal2OpenEventForView(codigo){
-  try{
-    const data = await apiGet('geteventocalendariociudadano', { codigo });
-    if(!data){
-      Swal.fire({icon:'info',title:'Evento no encontrado'});
-      return;
-    }
-    const ev = cal2NormalizeEvent(data);
-    CAL2_SELECTED_EVENT = ev;
+        const hdr = document.createElement('div');
+        hdr.className = 'cal2-week-header-row';
+        hdr.textContent = '';
+        root.appendChild(hdr);
 
-    const rawFecha = ev.fechaEvento || '';
-    let fechaDet = 'No Ingresado';
-    if(rawFecha){
-      if(/^\d{2}\/\d{2}\/\d{4}$/.test(rawFecha.trim())){
-        fechaDet = rawFecha.trim();
-      }else{
-        const d = new Date(rawFecha);
-        if(!isNaN(d.getTime())){
-          const dd = cal2Pad2(d.getDate());
-          const mm = cal2Pad2(d.getMonth()+1);
-          const yy = d.getFullYear();
-          fechaDet = dd + '/' + mm + '/' + yy;
+        const body = document.createElement('div');
+        body.className = 'cal2-week-body';
+
+        for(let i=0;i<7;i++){
+          const d = new Date(weekStart.getFullYear(),weekStart.getMonth(),weekStart.getDate() + i);
+          const dayBlock = document.createElement('div');
+          dayBlock.style.marginBottom = '6px';
+
+          const lbl = document.createElement('div');
+          lbl.style.fontWeight = '700';
+          lbl.style.fontSize = '.85rem';
+          lbl.textContent = weekdayNames[d.getDay()] + ' ' + d.getDate() + ' ' + monthNames[d.getMonth()];
+
+          if(sameDay(d,today)){
+            lbl.style.color = '#fff';
+            lbl.style.background = 'var(--primary)';
+            lbl.style.padding = '3px 8px';
+            lbl.style.borderRadius = '999px';
+            lbl.style.display = 'inline-block';
+          }
+
+          dayBlock.appendChild(lbl);
+
+          const dayEvents = events.filter(ev => sameDay(ev.fecha, d));
+          if(!dayEvents.length){
+            const p = document.createElement('div');
+            p.className = 'muted';
+            p.style.fontSize = '.75rem';
+            p.textContent = 'Sin eventos';
+            dayBlock.appendChild(p);
+          }else{
+            for(const ev of dayEvents){
+              const chip = document.createElement('div');
+              chip.className = 'cal2-event-chip';
+              chip.dataset.codigo = ev.codigo;
+              const t1 = document.createElement('span');
+              t1.className = 'cal2-evt-title';
+              t1.textContent = ev.nombreEvento || '(Sin título)';
+              const t2 = document.createElement('span');
+              t2.className = 'cal2-evt-time';
+              const timeTxt = (ev.horaInicio || ev.horaTerminacion) ? (ev.horaInicio + (ev.horaTerminacion ? ' - ' + ev.horaTerminacion : '')) : '';
+              t2.textContent = timeTxt;
+              chip.appendChild(t1);
+              if(timeTxt) chip.appendChild(t2);
+              chip.addEventListener('click', ()=> abrirDetalleEventoCiudadano(ev));
+              dayBlock.appendChild(chip);
+            }
+          }
+          body.appendChild(dayBlock);
         }
+
+        root.appendChild(body);
+        return;
+      }
+
+      if(view === 'day'){
+        const d = new Date(base.getFullYear(),base.getMonth(),base.getDate());
+        titleEl.textContent = weekdayNames[d.getDay()] + ' ' + d.getDate() + ' ' + monthNames[d.getMonth()] + ' ' + d.getFullYear();
+
+        const hdr = document.createElement('div');
+        hdr.className = 'cal2-day-header-row';
+        hdr.textContent = '';
+        root.appendChild(hdr);
+
+        const body = document.createElement('div');
+        body.className = 'cal2-day-body';
+
+        const dayEvents = events.filter(ev => sameDay(ev.fecha, d));
+        if(!dayEvents.length){
+          const p = document.createElement('div');
+          p.className = 'muted';
+          p.style.fontSize = '.8rem';
+          p.textContent = 'No hay eventos programados para este día.';
+          body.appendChild(p);
+        }else{
+          dayEvents.forEach(ev =>{
+            const chip = document.createElement('div');
+            chip.className = 'cal2-event-chip';
+            chip.dataset.codigo = ev.codigo;
+
+            const t1 = document.createElement('span');
+            t1.className = 'cal2-evt-title';
+            t1.textContent = ev.nombreEvento || '(Sin título)';
+
+            const t2 = document.createElement('span');
+            t2.className = 'cal2-evt-time';
+            const timeTxt = (ev.horaInicio || ev.horaTerminacion) ? (ev.horaInicio + (ev.horaTerminacion ? ' - ' + ev.horaTerminacion : '')) : '';
+            t2.textContent = timeTxt;
+
+            chip.appendChild(t1);
+            if(timeTxt) chip.appendChild(t2);
+            chip.addEventListener('click', ()=> abrirDetalleEventoCiudadano(ev));
+            body.appendChild(chip);
+          });
+        }
+
+        root.appendChild(body);
+        return;
+      }
+
+      if(view === 'year'){
+        const year = base.getFullYear();
+        titleEl.textContent = 'Año ' + year;
+
+        const grid = document.createElement('div');
+        grid.className = 'cal2-year-grid';
+
+        for(let m=0;m<12;m++){
+          const box = document.createElement('div');
+          box.className = 'cal2-year-month';
+          const h = document.createElement('h4');
+          h.textContent = monthNames[m];
+          box.appendChild(h);
+
+          const table = document.createElement('table');
+          const thead = document.createElement('thead');
+          const trh = document.createElement('tr');
+          weekdayNames.forEach(w=>{
+            const th = document.createElement('th');
+            th.textContent = w.charAt(0);
+            trh.appendChild(th);
+          });
+          thead.appendChild(trh);
+          table.appendChild(thead);
+
+          const tbody = document.createElement('tbody');
+          const firstM = new Date(year,m,1);
+          const startD = firstM.getDay();
+          let curDay = new Date(year,m,1-startD);
+          for(let row=0;row<6;row++){
+            const tr = document.createElement('tr');
+            for(let col=0;col<7;col++){
+              const td = document.createElement('td');
+              if(curDay.getMonth() === m){
+                td.textContent = curDay.getDate();
+                const hasEvt = events.some(ev => sameDay(ev.fecha, curDay));
+                if(hasEvt){
+                  const dot = document.createElement('span');
+                  dot.className = 'cal2-year-dot';
+                  td.appendChild(dot);
+                }
+              }else{
+                td.textContent = '';
+              }
+              tr.appendChild(td);
+              curDay = new Date(curDay.getFullYear(),curDay.getMonth(),curDay.getDate() + 1);
+            }
+            tbody.appendChild(tr);
+          }
+          table.appendChild(tbody);
+          box.appendChild(table);
+          grid.appendChild(box);
+        }
+
+        root.appendChild(grid);
       }
     }
 
-    const hi = cal2Time24ToAmPm(ev.horaInicio||'');
-    const hf = cal2Time24ToAmPm(ev.horaTerminacion||'');
+    function abrirDetalleEventoCiudadano(ev){
+      let html = '';
+      html += '<b>Fecha:</b> ' + (ev.fechaEvento || '') + '<br>';
+      if(ev.horaInicio || ev.horaTerminacion){
+        html += '<b>Hora:</b> ' + (ev.horaInicio || '') + (ev.horaTerminacion ? ' - ' + ev.horaTerminacion : '') + '<br>';
+      }
+      if(ev.lugar){
+        html += '<b>Lugar:</b> ' + ev.lugar + '<br>';
+      }
+      if(ev.zona){
+        html += '<b>Zona:</b> ' + ev.zona + '<br>';
+      }
+      if(ev.detalles){
+        html += '<br><b>Detalles:</b><br>' + ev.detalles.replace(/\n/g,'<br>');
+      }
+      if(ev.requerimientos){
+        html += '<br><br><b>Requerimientos:</b><br>' + ev.requerimientos.replace(/\n/g,'<br>');
+      }
+      if(ev.otros){
+        html += '<br><br><b>Otros:</b><br>' + ev.otros.replace(/\n/g,'<br>');
+      }
 
-    const html = [
-      '<p><b>Nombre del Evento:</b> ' + (ev.nombreEvento || 'No Ingresado') + '</p>',
-      '<p><b>Fecha:</b> ' + fechaDet + '</p>',
-      '<p><b>Horario:</b> ' + ((hi || hf) ? (hi + ' - ' + hf) : 'No Ingresado') + '</p>',
-      '<p><b>Lugar:</b> ' + (ev.lugar || 'No Ingresado') + '</p>',
-      '<p><b>Zona:</b> ' + (ev.zona || 'No Ingresado') + '</p>',
-      '<p><b>Detalles:</b><br>' + (ev.detalles || 'Sin detalles adicionales') + '</p>',
-      ev.requerimientos ? ('<p><b>Requerimientos:</b><br>' + ev.requerimientos + '</p>') : '',
-      ev.otros ? ('<p><b>Otros:</b><br>' + ev.otros + '</p>') : ''
-    ].join('');
+      Swal.fire({
+        icon:'info',
+        title: ev.nombreEvento || 'Detalle del evento',
+        html: html,
+        width:'90%'
+      });
+    }
 
-    Swal.fire({
-      icon:'info',
-      title:'Detalle del Evento',
-      html:html,
-      width:'90%'
-    });
-  }catch(e){
-    Swal.fire({icon:'error',title:'Error',text:String(e.message||e)});
-  }
-}
-function cal2SyncViewButtons(){
-  ['cal2-view-day','cal2-view-week','cal2-view-month','cal2-view-year'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.classList.remove('active');
-  });
-  if(CAL2_CURRENT_VIEW === 'day') document.getElementById('cal2-view-day')?.classList.add('active');
-  if(CAL2_CURRENT_VIEW === 'week') document.getElementById('cal2-view-week')?.classList.add('active');
-  if(CAL2_CURRENT_VIEW === 'month') document.getElementById('cal2-view-month')?.classList.add('active');
-  if(CAL2_CURRENT_VIEW === 'year') document.getElementById('cal2-view-year')?.classList.add('active');
-}
+    // Navegación calendario
+    (function initCal2Nav(){
+      const prev  = document.getElementById('cal2-prev');
+      const next  = document.getElementById('cal2-next');
+      const today = document.getElementById('cal2-today');
+      const vMonth= document.getElementById('cal2-view-month');
+      const vWeek = document.getElementById('cal2-view-week');
+      const vDay  = document.getElementById('cal2-view-day');
+      const vYear = document.getElementById('cal2-view-year');
+      const filter= document.getElementById('cal2-filter');
+      const btnVolver = document.getElementById('cal2-volver');
+      const btnUnete  = document.getElementById('cal2-unete');
 
-/* Navegación y filtros del calendario ciudadano */
-document.getElementById('cal2-btn-today')?.addEventListener('click', ()=>{
-  CAL2_CURRENT_DATE = new Date();
-  cal2Render();
-});
-document.getElementById('cal2-prev')?.addEventListener('click', ()=>{
-  if(CAL2_CURRENT_VIEW === 'year'){
-    CAL2_CURRENT_DATE.setFullYear(CAL2_CURRENT_DATE.getFullYear()-1);
-  }else if(CAL2_CURRENT_VIEW === 'month'){
-    CAL2_CURRENT_DATE.setMonth(CAL2_CURRENT_DATE.getMonth()-1);
-  }else if(CAL2_CURRENT_VIEW === 'week'){
-    CAL2_CURRENT_DATE.setDate(CAL2_CURRENT_DATE.getDate()-7);
-  }else if(CAL2_CURRENT_VIEW === 'day'){
-    CAL2_CURRENT_DATE.setDate(CAL2_CURRENT_DATE.getDate()-1);
-  }
-  cal2Render();
-});
-document.getElementById('cal2-next')?.addEventListener('click', ()=>{
-  if(CAL2_CURRENT_VIEW === 'year'){
-    CAL2_CURRENT_DATE.setFullYear(CAL2_CURRENT_DATE.getFullYear()+1);
-  }else if(CAL2_CURRENT_VIEW === 'month'){
-    CAL2_CURRENT_DATE.setMonth(CAL2_CURRENT_DATE.getMonth()+1);
-  }else if(CAL2_CURRENT_VIEW === 'week'){
-    CAL2_CURRENT_DATE.setDate(CAL2_CURRENT_DATE.getDate()+7);
-  }else if(CAL2_CURRENT_VIEW === 'day'){
-    CAL2_CURRENT_DATE.setDate(CAL2_CURRENT_DATE.getDate()+1);
-  }
-  cal2Render();
-});
-document.getElementById('cal2-view-day')?.addEventListener('click', ()=>{
-  CAL2_CURRENT_VIEW = 'day';
-  cal2SyncViewButtons();
-  cal2Render();
-});
-document.getElementById('cal2-view-week')?.addEventListener('click', ()=>{
-  CAL2_CURRENT_VIEW = 'week';
-  cal2SyncViewButtons();
-  cal2Render();
-});
-document.getElementById('cal2-view-month')?.addEventListener('click', ()=>{
-  CAL2_CURRENT_VIEW = 'month';
-  cal2SyncViewButtons();
-  cal2Render();
-});
-document.getElementById('cal2-view-year')?.addEventListener('click', ()=>{
-  CAL2_CURRENT_VIEW = 'year';
-  cal2SyncViewButtons();
-  cal2Render();
-});
-document.getElementById('cal2-filter-toggle')?.addEventListener('click', ()=>{
-  const input = document.getElementById('cal2-filter-input');
-  if(!input) return;
-  const visible = input.style.display !== 'none';
-  if(visible){
-    input.style.display = 'none';
-    input.value = '';
-    cal2Render();
-  }else{
-    input.style.display = '';
-    input.focus();
-  }
-});
-document.getElementById('cal2-filter-input')?.addEventListener('input', ()=>{
-  cal2Render();
-});
+      if(btnUnete){
+        btnUnete.addEventListener('click', ()=>{
+          window.open(
+            'https://calendar.google.com/calendar/u/0?cid=ZDgyZjI1Nzg1MzQxOGM3YWY1ZDgyOWY1YmFhNWQ0NzYwYmJjYTQwZDRkNzg3OGM0NDkyOTEyNGI5NTY1ZDZkNkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t',
+            '_blank'
+          );
+        });
+      }
 
-/* Botón Únete: abre enlace del calendario de Google */
-document.getElementById('cal2-unete')?.addEventListener('click', ()=>{
-  const url = 'https://calendar.google.com/calendar/u/0?cid=ZDgyZjI1Nzg1MzQxOGM3YWY1ZDgyOWY1YmFhNWQ0NzYwYmJjYTQwZDRkNzg3OGM0NDkyOTEyNGI5NTY1ZDZkNkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t';
-  window.open(url, '_blank', 'noopener');
-});
+      if(btnVolver){
+        btnVolver.addEventListener('click', ()=>{
+          showView('view-menu');
+        });
+      }
+
+      function setActiveViewButton(){
+        const all = [vMonth,vWeek,vDay,vYear];
+        all.forEach(b=>{ if(b) b.classList.remove('active'); });
+        if(CAL2_VIEW === 'month' && vMonth) vMonth.classList.add('active');
+        if(CAL2_VIEW === 'week'  && vWeek)  vWeek.classList.add('active');
+        if(CAL2_VIEW === 'day'   && vDay)   vDay.classList.add('active');
+        if(CAL2_VIEW === 'year'  && vYear)  vYear.classList.add('active');
+      }
+
+      if(prev){
+        prev.addEventListener('click', ()=>{
+          if(CAL2_VIEW === 'month'){
+            CAL2_CURSOR = new Date(CAL2_CURSOR.getFullYear(), CAL2_CURSOR.getMonth()-1, 1);
+          }else if(CAL2_VIEW === 'week'){
+            CAL2_CURSOR = new Date(CAL2_CURSOR.getFullYear(), CAL2_CURSOR.getMonth(), CAL2_CURSOR.getDate()-7);
+          }else if(CAL2_VIEW === 'day'){
+            CAL2_CURSOR = new Date(CAL2_CURSOR.getFullYear(), CAL2_CURSOR.getMonth(), CAL2_CURSOR.getDate()-1);
+          }else if(CAL2_VIEW === 'year'){
+            CAL2_CURSOR = new Date(CAL2_CURSOR.getFullYear()-1, CAL2_CURSOR.getMonth(), CAL2_CURSOR.getDate());
+          }
+          renderCalendarioCiudadano();
+        });
+      }
+
+      if(next){
+        next.addEventListener('click', ()=>{
+          if(CAL2_VIEW === 'month'){
+            CAL2_CURSOR = new Date(CAL2_CURSOR.getFullYear(), CAL2_CURSOR.getMonth()+1, 1);
+          }else if(CAL2_VIEW === 'week'){
+            CAL2_CURSOR = new Date(CAL2_CURSOR.getFullYear(), CAL2_CURSOR.getMonth(), CAL2_CURSOR.getDate()+7);
+          }else if(CAL2_VIEW === 'day'){
+            CAL2_CURSOR = new Date(CAL2_CURSOR.getFullYear(), CAL2_CURSOR.getMonth(), CAL2_CURSOR.getDate()+1);
+          }else if(CAL2_VIEW === 'year'){
+            CAL2_CURSOR = new Date(CAL2_CURSOR.getFullYear()+1, CAL2_CURSOR.getMonth(), CAL2_CURSOR.getDate());
+          }
+          renderCalendarioCiudadano();
+        });
+      }
+
+      if(today){
+        today.addEventListener('click', ()=>{
+          CAL2_CURSOR = new Date();
+          renderCalendarioCiudadano();
+        });
+      }
+
+      if(vMonth){
+        vMonth.addEventListener('click', ()=>{
+          CAL2_VIEW = 'month';
+          setActiveViewButton();
+          renderCalendarioCiudadano();
+        });
+      }
+      if(vWeek){
+        vWeek.addEventListener('click', ()=>{
+          CAL2_VIEW = 'week';
+          setActiveViewButton();
+          renderCalendarioCiudadano();
+        });
+      }
+      if(vDay){
+        vDay.addEventListener('click', ()=>{
+          CAL2_VIEW = 'day';
+          setActiveViewButton();
+          renderCalendarioCiudadano();
+        });
+      }
+      if(vYear){
+        vYear.addEventListener('click', ()=>{
+          CAL2_VIEW = 'year';
+          setActiveViewButton();
+          renderCalendarioCiudadano();
+        });
+      }
+
+      if(filter){
+        filter.addEventListener('input', ()=>{
+          renderCalendarioCiudadano();
+        });
+      }
+    })();
 
   </script>
 </body>
