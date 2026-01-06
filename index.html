@@ -1731,52 +1731,53 @@
         #SoyDeFlandes #CasaSocial #NoParamos #SiemprePresentes
       </p>
     </div>
-          <!-- VISTA: NUESTRO CALENDARIO -->
+      </div>
+  <!-- Forzar abrir Google Maps app con fallback a web -->
+  
+             <!-- VISTA: NUESTRO CALENDARIO (CIUDADANO) -->
     <section id="view-calendario-ciudadano" class="view">
-      <div class="card">
-        <div class="cal2-wrapper">
-          <h2 style="color:var(--primary)">NUESTRO CALENDARIO</h2>
+      <div class="card narrow" style="padding-top:12px;">
+        <h2 style="color:var(--primary); text-shadow: 0 2px 2px #031732; margin-bottom:6px;">
+          NUESTRO CALENDARIO
+        </h2>
 
+        <div class="cal2-wrapper">
           <div class="cal2-header">
-            <div>
-              <div class="cal2-title" id="cal2-title-text">Mes actual</div>
-              <p class="muted" style="margin:2px 0 0;">Actividades y eventos programados</p>
+            <div class="cal2-title" id="cal2-title"></div>
+            <div class="cal2-nav-group">
+              <button type="button" id="cal2-prev"  class="cal2-pill-btn">&lt;</button>
+              <button type="button" id="cal2-today" class="cal2-pill-btn">Hoy</button>
+              <button type="button" id="cal2-next"  class="cal2-pill-btn">&gt;</button>
             </div>
             <div class="cal2-nav-group">
-              <button id="cal2-btn-today" class="cal2-pill-btn">Hoy</button>
-              <button id="cal2-prev" class="cal2-pill-btn" aria-label="Anterior">‹</button>
-              <button id="cal2-next" class="cal2-pill-btn" aria-label="Siguiente">›</button>
-            </div>
-            <div class="cal2-filter-wrap">
-              <button id="cal2-filter-toggle" class="cal2-pill-btn">Filtrar</button>
-              <input id="cal2-filter-input" class="cal2-filter-input" type="text" placeholder="Filtrar por evento o lugar" style="display:none;">
-            </div>
-            <div class="cal2-nav-group">
-              <button id="cal2-view-day" class="cal2-pill-btn">Día</button>
-              <button id="cal2-view-week" class="cal2-pill-btn">Semana</button>
-              <button id="cal2-view-month" class="cal2-pill-btn active">Mes</button>
-              <button id="cal2-view-year" class="cal2-pill-btn">Año</button>
+              <button type="button" data-view="month"  id="cal2-view-month"  class="cal2-pill-btn active">Mes</button>
+              <button type="button" data-view="week"   id="cal2-view-week"   class="cal2-pill-btn">Semana</button>
+              <button type="button" data-view="day"    id="cal2-view-day"    class="cal2-pill-btn">Día</button>
+              <button type="button" data-view="year"   id="cal2-view-year"   class="cal2-pill-btn">Año</button>
             </div>
           </div>
 
           <div class="cal2-unete-wrap">
-            <button id="cal2-unete" class="cal2-unete-btn">Únete</button>
+            <button type="button" id="cal2-unete" class="cal2-unete-btn">Únete</button>
           </div>
 
-          <div id="cal2-container" class="cal2-grid">
-            <div style="padding:14px; text-align:center; font-size:.9rem;" class="muted">
-              Cargando calendario…
+          <div class="cal2-header" style="margin-top:8px;">
+            <div class="cal2-filter-wrap">
+              <label for="cal2-filter" style="font-size:.85rem; font-weight:700; color:#555;">Filtrar</label>
+              <input id="cal2-filter" class="cal2-filter-input" type="text" placeholder="Escribe para filtrar por nombre, lugar o zona">
             </div>
           </div>
 
+          <div id="cal2-root" class="cal2-grid">
+            <!-- Aquí se pinta el calendario por JS -->
+          </div>
+
           <div class="cal2-footer-actions">
-            <button id="cal2-btn-back" class="danger">Regresar</button>
+            <button type="button" id="cal2-volver" class="btn-primary" style="flex:0 0 auto;">Atrás</button>
           </div>
         </div>
       </div>
     </section>
-  </div>
-  <!-- Forzar abrir Google Maps app con fallback a web -->
   
   <script>
     (function(){
@@ -2701,6 +2702,21 @@ document.getElementById('go-redes').addEventListener('click', ()=>{
   overlay.classList.remove('open');
   showView('view-redes');
 });
+
+        // NUESTRO CALENDARIO (botón de menú)
+    (function(){
+      const btnCal = document.getElementById('go-calendario-ciudadano');
+      if(!btnCal) return;
+      btnCal.addEventListener('click', async ()=>{
+        overlay.classList.remove('open');
+        try{
+          await cargarCalendarioCiudadano();
+          showView('view-calendario-ciudadano');
+        }catch(e){
+          Swal.fire({ icon:'error', title:'No se pudo cargar el calendario', text:String(e && e.message ? e.message : e) });
+        }
+      });
+    })();
 
     // listeners LIBRETA DE CONTACTOS
     document.getElementById('go-libretacontactos').addEventListener('click', async ()=>{
