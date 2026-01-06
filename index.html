@@ -127,6 +127,69 @@
 .overlay.open .scrim{ opacity:1; }
 .overlay.open .panel{ transform: translateX(0); }
 .panel h3{ margin: 4px 0 8px; text-align:center; }
+
+  /* Bloques de categorías en el menú lateral */
+.menu-section-block{
+  margin:6px 0;
+}
+
+/* Botón de categoría (cabecera) */
+.menu-cat-btn{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:10px;
+  width:100%;
+  border-radius:999px;
+  font-weight:800;
+  font-size:0.9rem;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* Texto dentro del botón de categoría */
+.menu-cat-btn span{
+  flex:1 1 auto;
+  text-align:left;
+}
+
+/* Contenedor de opciones de cada categoría */
+.menu-cat-options{
+  display:none;
+  flex-direction:column;
+  gap:8px;
+  margin:6px 0 10px;
+}
+
+/* Botones internos un poco más compactos dentro de las categorías */
+.menu-cat-options .menu-btn{
+  font-weight:600;
+  font-size:0.86rem;
+}
+
+/* Categoría activa (cabecera resaltada) */
+.menu-cat-btn.active{
+  background:#7de3ef;
+  color:#000;
+  border-color:#7de3ef;
+}
+
+/* Animación de aparición de las opciones */
+.menu-cat-options.showing{
+  animation: menuDropIn 0.22s ease-out;
+}
+
+@keyframes menuDropIn{
+  from{
+    opacity:0;
+    transform:translateY(-6px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
    
     /* VIDEO */
     .video-card{
@@ -1003,22 +1066,68 @@
     <div class="image-center">
       <img alt="banner" src="https://res.cloudinary.com/dqqeavica/image/upload/v1759696513/Jhonny_y1tslf.gif" style="max-width:180px;border-radius:10px;" />
     </div>
-    <h3>Selecciona una de las opciones</h3>
-    <button class="menu-btn" id="go-feed">
-      Ponte al día 📅
-      <span id="go-feed-badge" class="btn-badge">0</span>
-    </button>
-    <button class="menu-btn" id="go-solicitud">Realiza tu Solicitud 📬</button>
-    <button class="menu-btn" id="go-ideas">Suma tus Ideas 💡</button>
-    <button class="menu-btn" id="go-libretacontactos">Libreta de Contactos 📒</button>
-    <button class="menu-btn" id="go-comerciantes">Comerciantes Amigos 🛍️</button>
-    <button class="menu-btn" id="go-sede">Visita Nuestra Casa Social 📍</button>
-    <button class="menu-btn" id="go-redes">Conoce Nuestras Redes Sociales 🌐</button>
-    <button class="menu-btn" id="go-asistencia">Registra Asistencia a Evento ✋🏾</button>
-    <button class="menu-btn" id="go-actualizacion">Actualiza tus Datos Personales 🔁</button>
-    <button class="menu-btn" id="go-consultar">Consulta tu Puesto de Votación 🗳</button>
-    <button class="menu-btn" id="go-lider">Refiere por Whatsapp 📤</button>
-    <button class="menu-btn" id="go-referidos">Mis Referidos 🔢</button>
+        <h3>Selecciona una categoría</h3>
+
+    <!-- REGISTRO DE DATOS -->
+    <div class="menu-section-block">
+      <button class="menu-btn menu-cat-btn" data-cat="cat-registro">
+        <span>REGISTRO DE DATOS</span>
+      </button>
+      <div id="cat-registro" class="menu-cat-options">
+        <button class="menu-btn" id="go-actualizacion">Actualiza tus Datos Personales 🔁</button>
+        <button class="menu-btn" id="go-asistencia">Registra Asistencia a Evento ✋🏾</button>
+        <button class="menu-btn" id="go-consultar">Consulta tu Puesto de Votación 🗳</button>
+      </div>
+    </div>
+
+    <!-- APORTES Y SOLICITUDES -->
+    <div class="menu-section-block">
+      <button class="menu-btn menu-cat-btn" data-cat="cat-aportes">
+        <span>APORTES Y SOLICITUDES</span>
+      </button>
+      <div id="cat-aportes" class="menu-cat-options">
+        <button class="menu-btn" id="go-solicitud">Realiza tu Solicitud 📬</button>
+        <button class="menu-btn" id="go-ideas">Suma tus Ideas 💡</button>
+      </div>
+    </div>
+
+    <!-- NUESTRO EQUIPO, TU EQUIPO -->
+    <div class="menu-section-block">
+      <button class="menu-btn menu-cat-btn" data-cat="cat-equipo">
+        <span>NUESTRO EQUIPO, TU EQUIPO</span>
+      </button>
+      <div id="cat-equipo" class="menu-cat-options">
+        <button class="menu-btn" id="go-feed">
+          Ponte al día 📅
+          <span id="go-feed-badge" class="btn-badge">0</span>
+        </button>
+        <button class="menu-btn" id="go-sede">Visita Nuestra Casa Social 📍</button>
+        <button class="menu-btn" id="go-redes">Conoce Nuestras Redes Sociales 🌐</button>
+      </div>
+    </div>
+
+    <!-- GESTIÓN E INFORMACIÓN -->
+    <div class="menu-section-block">
+      <button class="menu-btn menu-cat-btn" data-cat="cat-gestion">
+        <span>GESTIÓN E INFORMACIÓN</span>
+      </button>
+      <div id="cat-gestion" class="menu-cat-options">
+        <button class="menu-btn" id="go-libretacontactos">Libreta de Contactos 📒</button>
+        <button class="menu-btn" id="go-comerciantes">Comerciantes Amigos 🛍️</button>
+      </div>
+    </div>
+
+    <!-- LÍDERES (se controla visibilidad desde JS) -->
+    <div class="menu-section-block" id="cat-lideres-block">
+      <button class="menu-btn menu-cat-btn" data-cat="cat-lideres">
+        <span>LÍDERES</span>
+      </button>
+      <div id="cat-lideres" class="menu-cat-options">
+        <button class="menu-btn" id="go-lider">Refiere por Whatsapp 📤</button>
+        <button class="menu-btn" id="go-referidos">Mis Referidos 🔢</button>
+      </div>
+    </div>
+
     <div style="height:24px"></div>
     <img class="brand" alt="Brand" src="https://res.cloudinary.com/dqqeavica/image/upload/v1767567076/banner_yaupdc.png" />
     <p class="center muted">Copyright © <a href="#" target="https://wa.me/573103230712"><b>Oscar Polanía</b></a></p>
@@ -1945,15 +2054,18 @@ function stopLoading(){
       }catch(e){ /* silencio */ }
     }
 
-    // Ocultar botón si no es Lider
-   function updateLeaderUI(isLeader){
-  try{
-    const btnLider = document.getElementById('go-lider');
-    const btnRef   = document.getElementById('go-referidos');
-    if(btnLider) btnLider.style.display = isLeader ? '' : 'none';
-    if(btnRef)   btnRef.style.display   = isLeader ? '' : 'none';
-  }catch(_){}
-}
+        // Ocultar bloque de LÍDERES si no es líder
+    function updateLeaderUI(isLeader){
+      try{
+        const btnLider   = document.getElementById('go-lider');
+        const btnRef     = document.getElementById('go-referidos');
+        const catLideres = document.getElementById('cat-lideres-block');
+
+        if(btnLider)   btnLider.style.display   = isLeader ? '' : 'none';
+        if(btnRef)     btnRef.style.display     = isLeader ? '' : 'none';
+        if(catLideres) catLideres.style.display = isLeader ? '' : 'none';
+      }catch(_){}
+    }
     
     // Choices (select con filtro)
     let choicesReg = null, choicesUpd = null, choicesCom = null;
@@ -2208,6 +2320,72 @@ if (!telefonoRegex.test(formData.telefono)) {
           }, { capture:true });
         }
       });
+    })();
+
+
+        // Menú por categorías: abrir/cerrar secciones con sonido back
+    (function initOverlayCategories(){
+      const catButtons    = Array.from(document.querySelectorAll('.menu-cat-btn'));
+      const catContainers = Array.from(document.querySelectorAll('.menu-cat-options'));
+
+      function hideAllCategories(){
+        catContainers.forEach(c =>{
+          c.style.display = 'none';
+          c.classList.remove('showing');
+        });
+        catButtons.forEach(b => b.classList.remove('active'));
+      }
+
+      function showCategory(catId){
+        hideAllCategories();
+
+        const cont = document.getElementById(catId);
+        const btn  = catButtons.find(b => b.dataset.cat === catId);
+
+        if(cont){
+          cont.style.display = 'flex';
+          // fuerza reflujo para poder aplicar animación
+          cont.offsetHeight;
+          cont.classList.add('showing');
+        }
+        if(btn){
+          btn.classList.add('active');
+        }
+      }
+
+      // Click en la cabecera de cada categoría: toggle con sonido BACK
+      catButtons.forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const id = btn.dataset.cat;
+          if(!id) return;
+
+          try{
+            if(typeof playSoundOnce === 'function' && SOUNDS && SOUNDS.back){
+              playSoundOnce(SOUNDS.back);
+            }
+          }catch(_){}
+
+          const cont = document.getElementById(id);
+          const isOpen = cont && cont.style.display === 'flex';
+
+          if(isOpen){
+            hideAllCategories();
+          }else{
+            showCategory(id);
+          }
+        });
+      });
+
+      // Al cargar: todas cerradas
+      hideAllCategories();
+
+      // Al abrir el overlay con el botón MENÚ, se cierran todas las categorías
+      const openBtn = document.getElementById('btn-open-menu');
+      if(openBtn){
+        openBtn.addEventListener('click', ()=>{
+          hideAllCategories();
+        });
+      }
     })();
 
     document.getElementById('btn-logout').addEventListener('click', ()=>{
