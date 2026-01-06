@@ -815,6 +815,223 @@
   border-color: #fc8b08 !important;
   color:#fff !important;
 }
+
+  /* ================== NUESTRO CALENDARIO (ciudadano) ================== */
+.cal2-wrapper{
+  max-width: 960px;
+  margin: 0 auto;
+}
+.cal2-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+  flex-wrap:wrap;
+}
+.cal2-title{
+  font-weight:800;
+  font-size:1.1rem;
+  color:var(--primary);
+}
+.cal2-nav-group{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.cal2-pill-btn{
+  border-radius:999px;
+  padding:8px 14px;
+  border:2px solid var(--primary);
+  background:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+.cal2-pill-btn.active{
+  background:var(--primary);
+  color:#fff;
+  border-color:var(--primary-2);
+}
+.cal2-filter-wrap{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.cal2-filter-input{
+  border-radius:999px;
+  padding:8px 12px;
+  border:1.5px solid #ccc;
+  min-width:220px;
+}
+
+.cal2-grid{
+  margin-top:10px;
+  border-radius:16px;
+  background:rgba(255,255,255,.9);
+  border:2px solid #ddd;
+  overflow:hidden;
+}
+.cal2-month-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  border-top:1px solid #eee;
+}
+.cal2-weekdays{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  background:#f7fafc;
+  border-bottom:1px solid #eee;
+}
+.cal2-weekday{
+  padding:6px 4px;
+  text-align:center;
+  font-size:.8rem;
+  font-weight:700;
+  color:#555;
+}
+.cal2-day-cell{
+  min-height:86px;
+  border-right:1px solid #f1f1f1;
+  border-bottom:1px solid #f1f1f1;
+  padding:4px;
+  box-sizing:border-box;
+  position:relative;
+  background:#fff;
+}
+.cal2-day-cell.other-month{
+  background:#f9fafb;
+}
+.cal2-day-number{
+  font-size:.78rem;
+  font-weight:700;
+  color:#111;
+}
+.cal2-day-number.today{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:22px;
+  height:22px;
+  border-radius:999px;
+  background:var(--primary);
+  color:#fff;
+}
+
+.cal2-event-chip{
+  margin-top:2px;
+  padding:2px 4px;
+  border-radius:8px;
+  font-size:.65rem;
+  line-height:1.1;
+  cursor:pointer;
+  color:#111;
+  box-shadow:0 1px 3px rgba(0,0,0,.16);
+  background:#fed7aa;            /* naranja claro */
+  border:1px solid #fb923c;      /* naranja un poco más oscuro */
+}
+.cal2-evt-title{
+  font-weight:800;
+  display:block;
+}
+.cal2-evt-time{
+  font-weight:600;
+  font-size:.6rem;
+}
+
+.cal2-day-view,
+.cal2-week-view{
+  border-top:1px solid #eee;
+}
+.cal2-day-header-row,
+.cal2-week-header-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:6px 10px;
+  background:#f7fafc;
+  border-bottom:1px solid #eee;
+  font-size:.85rem;
+  font-weight:700;
+}
+.cal2-day-body,
+.cal2-week-body{
+  padding:8px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.cal2-year-grid{
+  border-top:1px solid #eee;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:10px;
+  padding:10px;
+}
+.cal2-year-month{
+  border-radius:12px;
+  background:#f9fafb;
+  padding:8px;
+  box-sizing:border-box;
+}
+.cal2-year-month h4{
+  margin:0 0 4px;
+  font-size:.8rem;
+  text-align:center;
+  color:#111;
+}
+.cal2-year-month table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:.7rem;
+  text-align:center;
+}
+.cal2-year-month th{
+  font-weight:700;
+  color:#666;
+  padding:2px 0;
+}
+.cal2-year-month td{
+  padding:2px 0;
+  color:#111;
+}
+.cal2-year-dot{
+  width:6px;
+  height:6px;
+  border-radius:999px;
+  display:inline-block;
+  margin-left:2px;
+  background:#fb923c;
+}
+
+.cal2-footer-actions{
+  margin-top:14px;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+/* Botón Únete centrado debajo del header del calendario */
+.cal2-unete-wrap{
+  text-align:center;
+  margin-top:6px;
+}
+.cal2-unete-btn{
+  display:inline-block;
+  padding:6px 14px;
+  border-radius:999px;
+  border:2px solid var(--primary);
+  background:#fff;
+  color:#000;
+  font-weight:700;
+  font-size:.9rem;
+  cursor:pointer;
+}
+.cal2-unete-btn:hover{
+  background:var(--primary-2);
+  color:#fff;
+  border-color:var(--primary-2);
+}
 </style>
   
 </head>
@@ -1091,7 +1308,7 @@
       </div>
     </div>
 
-    <!-- NUESTRO EQUIPO, TU EQUIPO -->
+        <!-- NUESTRO EQUIPO, TU EQUIPO -->
     <div class="menu-section-block">
       <button class="menu-btn menu-cat-btn" data-cat="cat-equipo">
         <span>NUESTRO EQUIPO, TU EQUIPO</span>
@@ -1101,6 +1318,7 @@
           Ponte al día 📅
           <span id="go-feed-badge" class="btn-badge">0</span>
         </button>
+        <button class="menu-btn" id="go-calendario-ciudadano">Nuestro Calendario 📆</button>
         <button class="menu-btn" id="go-sede">Visita Nuestra Casa Social 📍</button>
         <button class="menu-btn" id="go-redes">Conoce Nuestras Redes Sociales 🌐</button>
       </div>
@@ -1514,9 +1732,53 @@
       </p>
     </div>
   </div>
-
-  
   <!-- Forzar abrir Google Maps app con fallback a web -->
+
+      <!-- VISTA: NUESTRO CALENDARIO -->
+    <section id="view-calendario-ciudadano" class="view">
+      <div class="card">
+        <div class="cal2-wrapper">
+          <h2 style="color:var(--primary)">NUESTRO CALENDARIO</h2>
+
+          <div class="cal2-header">
+            <div>
+              <div class="cal2-title" id="cal2-title-text">Mes actual</div>
+              <p class="muted" style="margin:2px 0 0;">Actividades y eventos programados</p>
+            </div>
+            <div class="cal2-nav-group">
+              <button id="cal2-btn-today" class="cal2-pill-btn">Hoy</button>
+              <button id="cal2-prev" class="cal2-pill-btn" aria-label="Anterior">‹</button>
+              <button id="cal2-next" class="cal2-pill-btn" aria-label="Siguiente">›</button>
+            </div>
+            <div class="cal2-filter-wrap">
+              <button id="cal2-filter-toggle" class="cal2-pill-btn">Filtrar</button>
+              <input id="cal2-filter-input" class="cal2-filter-input" type="text" placeholder="Filtrar por evento o lugar" style="display:none;">
+            </div>
+            <div class="cal2-nav-group">
+              <button id="cal2-view-day" class="cal2-pill-btn">Día</button>
+              <button id="cal2-view-week" class="cal2-pill-btn">Semana</button>
+              <button id="cal2-view-month" class="cal2-pill-btn active">Mes</button>
+              <button id="cal2-view-year" class="cal2-pill-btn">Año</button>
+            </div>
+          </div>
+
+          <div class="cal2-unete-wrap">
+            <button id="cal2-unete" class="cal2-unete-btn">Únete</button>
+          </div>
+
+          <div id="cal2-container" class="cal2-grid">
+            <div style="padding:14px; text-align:center; font-size:.9rem;" class="muted">
+              Cargando calendario…
+            </div>
+          </div>
+
+          <div class="cal2-footer-actions">
+            <button id="cal2-btn-back" class="danger">Regresar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  
   <script>
     (function(){
       const btn = document.getElementById('btn-como-llegar');
@@ -2300,6 +2562,7 @@ if (!telefonoRegex.test(formData.telefono)) {
     (function(){
       const idsMenu = [
         'go-feed',
+        'go-calendario-ciudadano',
         'go-solicitud',
         'go-ideas',
         'go-libretacontactos',
@@ -2488,6 +2751,16 @@ document.getElementById('go-redes').addEventListener('click', ()=>{
   overlay.classList.remove('open');
   showView('view-feed');
 });
+
+        document.getElementById('go-calendario-ciudadano').addEventListener('click', async ()=>{
+      overlay.classList.remove('open');
+      await cal2LoadEvents();
+      CAL2_CURRENT_VIEW = 'month';
+      CAL2_CURRENT_DATE = new Date();
+      cal2SyncViewButtons();
+      showView('view-calendario-ciudadano');
+      cal2Render();
+    });
 
    /* ==== NOTIFICACIONES: feed, no leídas, badge, sonido ==== */
 let FEED_CACHE = []; // último listado obtenido
@@ -2876,7 +3149,7 @@ document.addEventListener('visibilitychange', () => {
 });
 
 // Detener al navegar desde el menú a cualquier otra vista
-['go-asistencia','go-actualizacion','go-consultar','go-solicitud','go-ideas','go-sede','go-redes','btn-logout','go-feed','go-libretacontactos','go-comerciantes','go-referidos']
+['go-asistencia','go-actualizacion','go-consultar','go-solicitud','go-ideas','go-sede','go-redes','btn-logout','go-feed','go-libretacontactos','go-comerciantes','go-referidos','go-calendario-ciudadano']
   .forEach(id => {
     const el = document.getElementById(id);
     if (el) {
@@ -3576,13 +3849,13 @@ backBtn.addEventListener('click', () => {
 })();
 
     // Sonido para botones Atrás/Regresar
-    ['btn-ovl-back','a-volver','v-volver','upd-volver','c-volver','s-volver','i-volver','btn-reg-atras','sede-volver','redes-volver','lc-volver','com-volver','ref-volver'].forEach(id=>{
+        ['btn-ovl-back','a-volver','v-volver','upd-volver','c-volver','s-volver','i-volver','btn-reg-atras','sede-volver','redes-volver','lc-volver','com-volver','ref-volver','cal2-btn-back'].forEach(id=>{
   const el = document.getElementById(id);
   if(el) el.addEventListener('click', ()=> playSoundOnce(SOUNDS.back));
 });
 
     // Volver genéricos
-    ['a-volver','v-volver','upd-volver','c-volver','s-volver','i-volver','sede-volver','redes-volver','lc-volver','com-volver','ref-volver'].forEach(id=>{
+        ['a-volver','v-volver','upd-volver','c-volver','s-volver','i-volver','sede-volver','redes-volver','lc-volver','com-volver','ref-volver','cal2-btn-back'].forEach(id=>{
   const el = document.getElementById(id);
   if(el) el.addEventListener('click', ()=> showView('view-menu'));
 });
@@ -3823,6 +4096,578 @@ document.getElementById('ref-volver').addEventListener('click', ()=> showView('v
       setup(regInput, regList);
       setup(updInput, updList);
     })();
+
+    /* ================== NUESTRO CALENDARIO (ciudadano) ================== */
+
+const CAL2_API_ACTION_LIST = 'listeventoscalendariociudadano';
+const CAL2_API_ACTION_GET  = 'geteventocalendariociudadano';
+
+let CAL2_EVENTS = [];
+let CAL2_CURRENT_VIEW = 'month';
+let CAL2_CURRENT_DATE = new Date();
+let CAL2_SELECTED_EVENT = null;
+
+const CAL2_MONTHS_SHORT = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+const CAL2_WEEKDAYS_SHORT = ['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
+
+function cal2Pad2(n){
+  return String(n).padStart(2,'0');
+}
+function cal2FormatDMY(d){
+  if(!d) return '';
+  const dd = cal2Pad2(d.getDate());
+  const mm = cal2Pad2(d.getMonth()+1);
+  const yy = d.getFullYear();
+  return dd + '/' + mm + '/' + yy;
+}
+function cal2ParseDMY(str){
+  if(!str) return null;
+  const p = String(str).split('/');
+  if(p.length !== 3) return null;
+  const d = parseInt(p[0],10);
+  const m = parseInt(p[1],10);
+  const y = parseInt(p[2],10);
+  if(!d || !m || !y) return null;
+  const dt = new Date(y,m-1,d);
+  if(isNaN(dt.getTime())) return null;
+  return dt;
+}
+function cal2MinutesFromTimeStr24(str){
+  if(!str) return 0;
+  const parts = String(str).split(':');
+  const h = parseInt(parts[0]||'0',10);
+  const m = parseInt(parts[1]||'0',10);
+  if(isNaN(h) || isNaN(m)) return 0;
+  return h*60 + m;
+}
+function cal2Time24ToAmPm(str){
+  if(!str) return '';
+  const parts = String(str).split(':');
+  let h = parseInt(parts[0]||'0',10);
+  const m = parseInt(parts[1]||'0',10);
+  if(isNaN(h) || isNaN(m)) return '';
+  let suf = 'AM';
+  if(h >= 12){
+    suf = 'PM';
+    if(h > 12) h = h - 12;
+  }
+  if(h === 0){
+    h = 12;
+    suf = 'AM';
+  }
+  const hStr = String(h);
+  const mStr = cal2Pad2(m);
+  return hStr + ':' + mStr + ' ' + suf;
+}
+function cal2EventMatchesFilter(ev, query){
+  if(!query) return true;
+  const q = query.toLowerCase();
+  return [
+    ev.nombreEvento,
+    ev.lugar,
+    ev.detalles,
+    ev.zona
+  ].some(v => String(v||'').toLowerCase().includes(q));
+}
+function cal2UpdateTitle(){
+  const titleEl = document.getElementById('cal2-title-text');
+  if(!titleEl) return;
+  if(CAL2_CURRENT_VIEW === 'year'){
+    titleEl.textContent = CAL2_CURRENT_DATE.getFullYear();
+    return;
+  }
+  if(CAL2_CURRENT_VIEW === 'week'){
+    const start = cal2StartOfWeek(CAL2_CURRENT_DATE);
+    const end = cal2EndOfWeek(CAL2_CURRENT_DATE);
+    const label = CAL2_MONTHS_SHORT[start.getMonth()] + ' ' + start.getDate() +
+      ' – ' + CAL2_MONTHS_SHORT[end.getMonth()] + ' ' + end.getDate() +
+      ' ' + end.getFullYear();
+    titleEl.textContent = label;
+    return;
+  }
+  if(CAL2_CURRENT_VIEW === 'day'){
+    const d = CAL2_CURRENT_DATE;
+    const label = d.getDate() + ' ' + CAL2_MONTHS_SHORT[d.getMonth()] + ' ' + d.getFullYear();
+    titleEl.textContent = label;
+    return;
+  }
+  const d = CAL2_CURRENT_DATE;
+  titleEl.textContent = d.toLocaleDateString('es-CO', { month:'long', year:'numeric' }).toUpperCase();
+}
+function cal2StartOfWeek(d){
+  const dt = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const day = dt.getDay();
+  const diff = (day + 7 - 0) % 7;
+  dt.setDate(dt.getDate() - diff);
+  return dt;
+}
+function cal2EndOfWeek(d){
+  const start = cal2StartOfWeek(d);
+  const end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 6);
+  return end;
+}
+function cal2EventsOnDay(dmy){
+  return CAL2_EVENTS.filter(ev => ev.fechaEvento === dmy);
+}
+function cal2NormalizeEvent(ev){
+  const out = Object.assign({}, ev||{});
+  out.codigo        = String(out.codigo||'');
+  out.fechaEvento   = String(out.fechaEvento||'');
+  out.nombreEvento  = String(out.nombreEvento||'');
+  out.estado        = String(out.estado||'').toUpperCase();
+  out.horaInicio    = String(out.horaInicio||'');
+  out.horaTerminacion = String(out.horaTerminacion||'');
+  out.detalles      = String(out.detalles||'');
+  out.requerimientos= String(out.requerimientos||'');
+  out.otros         = String(out.otros||'');
+  out.lugar         = String(out.lugar||'');
+  out.zona          = String(out.zona||'');
+  out.nombre        = String(out.nombre||'');
+  out.contacto      = String(out.contacto||'');
+  return out;
+}
+async function cal2LoadEvents(){
+  try{
+    const list = await apiGet('listeventoscalendariociudadano', {});
+    CAL2_EVENTS = Array.isArray(list) ? list.map(ev => cal2NormalizeEvent(ev)) : [];
+  }catch(e){
+    CAL2_EVENTS = [];
+    Swal.fire({icon:'error',title:'Error cargando calendario',text:String(e.message||e)});
+  }
+}
+function cal2Render(){
+  const cont = document.getElementById('cal2-container');
+  if(!cont) return;
+  const filterVal = document.getElementById('cal2-filter-input')?.value.trim().toLowerCase() || '';
+  cont.innerHTML = '';
+  cal2UpdateTitle();
+
+  if(CAL2_CURRENT_VIEW === 'month'){
+    cal2RenderMonth(cont, filterVal);
+  }else if(CAL2_CURRENT_VIEW === 'week'){
+    cal2RenderWeek(cont, filterVal);
+  }else if(CAL2_CURRENT_VIEW === 'day'){
+    cal2RenderDay(cont, filterVal);
+  }else if(CAL2_CURRENT_VIEW === 'year'){
+    cal2RenderYear(cont, filterVal);
+  }
+}
+function cal2RenderMonth(cont, filterVal){
+  const header = document.createElement('div');
+  header.className = 'cal2-weekdays';
+  CAL2_WEEKDAYS_SHORT.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'cal2-weekday';
+    el.textContent = d;
+    header.appendChild(el);
+  });
+  cont.appendChild(header);
+
+  const grid = document.createElement('div');
+  grid.className = 'cal2-month-grid';
+
+  const year = CAL2_CURRENT_DATE.getFullYear();
+  const month = CAL2_CURRENT_DATE.getMonth();
+  const firstDay = new Date(year,month,1);
+  const startWeekDay = firstDay.getDay();
+  const daysInMonth = new Date(year,month+1,0).getDate();
+
+  const prevMonthDays = (startWeekDay + 7 - 0) % 7;
+  const totalCells = prevMonthDays + daysInMonth;
+  const cells = totalCells <= 35 ? 35 : 42;
+
+  const todayDMY = cal2FormatDMY(new Date());
+
+  for(let i=0; i<cells; i++){
+    const cell = document.createElement('div');
+    cell.className = 'cal2-day-cell';
+    const dayOffset = i - prevMonthDays + 1;
+    let cellDate;
+    let inThisMonth = true;
+
+    if(dayOffset < 1){
+      cellDate = new Date(year, month, dayOffset);
+      inThisMonth = false;
+    }else if(dayOffset > daysInMonth){
+      cellDate = new Date(year, month, dayOffset);
+      inThisMonth = false;
+    }else{
+      cellDate = new Date(year, month, dayOffset);
+    }
+
+    const iso = cal2FormatDMY(cellDate);
+    if(!inThisMonth) cell.classList.add('other-month');
+
+    const headerNum = document.createElement('div');
+    headerNum.className = 'cal2-day-number';
+
+    if(iso === todayDMY){
+      headerNum.classList.add('today');
+      headerNum.textContent = cellDate.getDate();
+    }else{
+      headerNum.textContent = cellDate.getDate();
+    }
+
+    cell.appendChild(headerNum);
+
+    const events = cal2EventsOnDay(iso).filter(ev => cal2EventMatchesFilter(ev, filterVal));
+    events.sort((a,b)=> cal2MinutesFromTimeStr24(a.horaInicio||'') - cal2MinutesFromTimeStr24(b.horaInicio||''));
+
+    events.forEach(ev => {
+      const chip = document.createElement('div');
+      chip.className = 'cal2-event-chip';
+
+      const title = document.createElement('span');
+      title.className = 'cal2-evt-title';
+      title.textContent = ev.nombreEvento || '';
+
+      const time = document.createElement('span');
+      time.className = 'cal2-evt-time';
+      const hi = cal2Time24ToAmPm(ev.horaInicio||'');
+      const hf = cal2Time24ToAmPm(ev.horaTerminacion||'');
+      time.textContent = (hi || hf) ? (hi + ' - ' + hf) : '';
+
+      chip.appendChild(title);
+      chip.appendChild(time);
+      chip.addEventListener('click', ()=> cal2OpenEventForView(ev.codigo));
+      cell.appendChild(chip);
+    });
+
+    grid.appendChild(cell);
+  }
+  cont.appendChild(grid);
+}
+function cal2RenderDay(cont, filterVal){
+  const header = document.createElement('div');
+  header.className = 'cal2-day-header-row';
+  const d = CAL2_CURRENT_DATE;
+  header.textContent = d.toLocaleDateString('es-CO',{ weekday:'long', day:'numeric', month:'long', year:'numeric' }).toUpperCase();
+  cont.appendChild(header);
+
+  const body = document.createElement('div');
+  body.className = 'cal2-day-body';
+
+  const iso = cal2FormatDMY(d);
+  const events = cal2EventsOnDay(iso).filter(ev => cal2EventMatchesFilter(ev, filterVal));
+  events.sort((a,b)=> cal2MinutesFromTimeStr24(a.horaInicio||'') - cal2MinutesFromTimeStr24(b.horaInicio||''));
+
+  if(!events.length){
+    const p = document.createElement('p');
+    p.className = 'muted';
+    p.textContent = 'Sin eventos para este día.';
+    body.appendChild(p);
+  }else{
+    events.forEach(ev => {
+      const chip = document.createElement('div');
+      chip.className = 'cal2-event-chip';
+
+      const title = document.createElement('span');
+      title.className = 'cal2-evt-title';
+      title.textContent = ev.nombreEvento || '';
+
+      const time = document.createElement('span');
+      time.className = 'cal2-evt-time';
+      const hi = cal2Time24ToAmPm(ev.horaInicio||'');
+      const hf = cal2Time24ToAmPm(ev.horaTerminacion||'');
+      time.textContent = (hi || hf) ? (hi + ' - ' + hf) : '';
+
+      const desc = document.createElement('div');
+      desc.style.fontSize = '.72rem';
+      desc.textContent = ev.lugar || '';
+
+      chip.appendChild(title);
+      chip.appendChild(time);
+      chip.appendChild(desc);
+
+      chip.addEventListener('click', ()=> cal2OpenEventForView(ev.codigo));
+      body.appendChild(chip);
+    });
+  }
+
+  cont.appendChild(body);
+}
+function cal2RenderWeek(cont, filterVal){
+  const start = cal2StartOfWeek(CAL2_CURRENT_DATE);
+  const end = cal2EndOfWeek(CAL2_CURRENT_DATE);
+
+  const header = document.createElement('div');
+  header.className = 'cal2-week-header-row';
+  header.textContent = 'Semana del ' +
+    start.getDate() + ' ' + CAL2_MONTHS_SHORT[start.getMonth()] +
+    ' al ' +
+    end.getDate() + ' ' + CAL2_MONTHS_SHORT[end.getMonth()] +
+    ' ' + end.getFullYear();
+  cont.appendChild(header);
+
+  const body = document.createElement('div');
+  body.className = 'cal2-week-body';
+
+  for(let i=0;i<7;i++){
+    const d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+    const iso = cal2FormatDMY(d);
+
+    const row = document.createElement('div');
+    row.style.borderRadius = '10px';
+    row.style.padding = '6px 8px';
+    row.style.background = '#f9fafb';
+    row.style.marginBottom = '6px';
+
+    const head = document.createElement('div');
+    head.style.display = 'flex';
+    head.style.alignItems = 'center';
+    head.style.justifyContent = 'space-between';
+
+    const left = document.createElement('span');
+    left.style.fontWeight = '700';
+    left.style.fontSize = '.8rem';
+    left.textContent = CAL2_WEEKDAYS_SHORT[d.getDay()] + ' ' + d.getDate() + ' ' + CAL2_MONTHS_SHORT[d.getMonth()];
+
+    head.appendChild(left);
+    row.appendChild(head);
+
+    const evs = cal2EventsOnDay(iso).filter(ev => cal2EventMatchesFilter(ev, filterVal));
+    evs.sort((a,b)=> cal2MinutesFromTimeStr24(a.horaInicio||'') - cal2MinutesFromTimeStr24(b.horaInicio||''));
+
+    if(!evs.length){
+      const p = document.createElement('p');
+      p.className = 'muted';
+      p.style.fontSize = '.72rem';
+      p.textContent = 'Sin eventos';
+      row.appendChild(p);
+    }else{
+      evs.forEach(ev => {
+        const chip = document.createElement('div');
+        chip.className = 'cal2-event-chip';
+
+        const title = document.createElement('span');
+        title.className = 'cal2-evt-title';
+        title.textContent = ev.nombreEvento || '';
+
+        const time = document.createElement('span');
+        time.className = 'cal2-evt-time';
+        const hi = cal2Time24ToAmPm(ev.horaInicio||'');
+        const hf = cal2Time24ToAmPm(ev.horaTerminacion||'');
+        time.textContent = (hi || hf) ? (hi + ' - ' + hf) : '';
+
+        chip.appendChild(title);
+        chip.appendChild(time);
+        chip.addEventListener('click', ()=> cal2OpenEventForView(ev.codigo));
+        row.appendChild(chip);
+      });
+    }
+
+    body.appendChild(row);
+  }
+
+  cont.appendChild(body);
+}
+function cal2RenderYear(cont, filterVal){
+  const grid = document.createElement('div');
+  grid.className = 'cal2-year-grid';
+
+  const year = CAL2_CURRENT_DATE.getFullYear();
+  const eventsByMonth = {};
+  CAL2_EVENTS.forEach(ev => {
+    const d = cal2ParseDMY(ev.fechaEvento);
+    if(!d || d.getFullYear() !== year) return;
+    const m = d.getMonth();
+    if(!eventsByMonth[m]) eventsByMonth[m] = [];
+    if(cal2EventMatchesFilter(ev, filterVal)){
+      eventsByMonth[m].push(ev);
+    }
+  });
+
+  for(let m=0;m<12;m++){
+    const box = document.createElement('div');
+    box.className = 'cal2-year-month';
+
+    const h4 = document.createElement('h4');
+    h4.textContent = new Date(year,m,1).toLocaleDateString('es-CO',{ month:'long' }).toUpperCase();
+    box.appendChild(h4);
+
+    const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    const trh = document.createElement('tr');
+    CAL2_WEEKDAYS_SHORT.forEach(d => {
+      const th = document.createElement('th');
+      th.textContent = d.charAt(0);
+      trh.appendChild(th);
+    });
+    thead.appendChild(trh);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    const first = new Date(year,m,1);
+    const startDay = first.getDay();
+    const daysInMonth = new Date(year,m+1,0).getDate();
+
+    let day = 1;
+    let done = false;
+    while(!done){
+      const tr = document.createElement('tr');
+      for(let wd=0; wd<7; wd++){
+        const td = document.createElement('td');
+        if(wd < startDay && day === 1){
+          td.textContent = '';
+        }else if(day > daysInMonth){
+          td.textContent = '';
+          done = true;
+        }else{
+          td.textContent = day;
+          const dmy = cal2FormatDMY(new Date(year,m,day));
+          const hasEvent = (eventsByMonth[m]||[]).some(ev => ev.fechaEvento === dmy);
+          if(hasEvent){
+            const dot = document.createElement('span');
+            dot.className = 'cal2-year-dot';
+            td.appendChild(dot);
+          }
+          day++;
+        }
+        tr.appendChild(td);
+      }
+      tbody.appendChild(tr);
+    }
+
+    table.appendChild(tbody);
+    box.appendChild(table);
+    grid.appendChild(box);
+  }
+
+  cont.appendChild(grid);
+}
+async function cal2OpenEventForView(codigo){
+  try{
+    const data = await apiGet('geteventocalendariociudadano', { codigo });
+    if(!data){
+      Swal.fire({icon:'info',title:'Evento no encontrado'});
+      return;
+    }
+    const ev = cal2NormalizeEvent(data);
+    CAL2_SELECTED_EVENT = ev;
+
+    const rawFecha = ev.fechaEvento || '';
+    let fechaDet = 'No Ingresado';
+    if(rawFecha){
+      if(/^\d{2}\/\d{2}\/\d{4}$/.test(rawFecha.trim())){
+        fechaDet = rawFecha.trim();
+      }else{
+        const d = new Date(rawFecha);
+        if(!isNaN(d.getTime())){
+          const dd = cal2Pad2(d.getDate());
+          const mm = cal2Pad2(d.getMonth()+1);
+          const yy = d.getFullYear();
+          fechaDet = dd + '/' + mm + '/' + yy;
+        }
+      }
+    }
+
+    const hi = cal2Time24ToAmPm(ev.horaInicio||'');
+    const hf = cal2Time24ToAmPm(ev.horaTerminacion||'');
+
+    const html = [
+      '<p><b>Nombre del Evento:</b> ' + (ev.nombreEvento || 'No Ingresado') + '</p>',
+      '<p><b>Fecha:</b> ' + fechaDet + '</p>',
+      '<p><b>Horario:</b> ' + ((hi || hf) ? (hi + ' - ' + hf) : 'No Ingresado') + '</p>',
+      '<p><b>Lugar:</b> ' + (ev.lugar || 'No Ingresado') + '</p>',
+      '<p><b>Zona:</b> ' + (ev.zona || 'No Ingresado') + '</p>',
+      '<p><b>Detalles:</b><br>' + (ev.detalles || 'Sin detalles adicionales') + '</p>',
+      ev.requerimientos ? ('<p><b>Requerimientos:</b><br>' + ev.requerimientos + '</p>') : '',
+      ev.otros ? ('<p><b>Otros:</b><br>' + ev.otros + '</p>') : ''
+    ].join('');
+
+    Swal.fire({
+      icon:'info',
+      title:'Detalle del Evento',
+      html:html,
+      width:'90%'
+    });
+  }catch(e){
+    Swal.fire({icon:'error',title:'Error',text:String(e.message||e)});
+  }
+}
+function cal2SyncViewButtons(){
+  ['cal2-view-day','cal2-view-week','cal2-view-month','cal2-view-year'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.classList.remove('active');
+  });
+  if(CAL2_CURRENT_VIEW === 'day') document.getElementById('cal2-view-day')?.classList.add('active');
+  if(CAL2_CURRENT_VIEW === 'week') document.getElementById('cal2-view-week')?.classList.add('active');
+  if(CAL2_CURRENT_VIEW === 'month') document.getElementById('cal2-view-month')?.classList.add('active');
+  if(CAL2_CURRENT_VIEW === 'year') document.getElementById('cal2-view-year')?.classList.add('active');
+}
+
+/* Navegación y filtros del calendario ciudadano */
+document.getElementById('cal2-btn-today')?.addEventListener('click', ()=>{
+  CAL2_CURRENT_DATE = new Date();
+  cal2Render();
+});
+document.getElementById('cal2-prev')?.addEventListener('click', ()=>{
+  if(CAL2_CURRENT_VIEW === 'year'){
+    CAL2_CURRENT_DATE.setFullYear(CAL2_CURRENT_DATE.getFullYear()-1);
+  }else if(CAL2_CURRENT_VIEW === 'month'){
+    CAL2_CURRENT_DATE.setMonth(CAL2_CURRENT_DATE.getMonth()-1);
+  }else if(CAL2_CURRENT_VIEW === 'week'){
+    CAL2_CURRENT_DATE.setDate(CAL2_CURRENT_DATE.getDate()-7);
+  }else if(CAL2_CURRENT_VIEW === 'day'){
+    CAL2_CURRENT_DATE.setDate(CAL2_CURRENT_DATE.getDate()-1);
+  }
+  cal2Render();
+});
+document.getElementById('cal2-next')?.addEventListener('click', ()=>{
+  if(CAL2_CURRENT_VIEW === 'year'){
+    CAL2_CURRENT_DATE.setFullYear(CAL2_CURRENT_DATE.getFullYear()+1);
+  }else if(CAL2_CURRENT_VIEW === 'month'){
+    CAL2_CURRENT_DATE.setMonth(CAL2_CURRENT_DATE.getMonth()+1);
+  }else if(CAL2_CURRENT_VIEW === 'week'){
+    CAL2_CURRENT_DATE.setDate(CAL2_CURRENT_DATE.getDate()+7);
+  }else if(CAL2_CURRENT_VIEW === 'day'){
+    CAL2_CURRENT_DATE.setDate(CAL2_CURRENT_DATE.getDate()+1);
+  }
+  cal2Render();
+});
+document.getElementById('cal2-view-day')?.addEventListener('click', ()=>{
+  CAL2_CURRENT_VIEW = 'day';
+  cal2SyncViewButtons();
+  cal2Render();
+});
+document.getElementById('cal2-view-week')?.addEventListener('click', ()=>{
+  CAL2_CURRENT_VIEW = 'week';
+  cal2SyncViewButtons();
+  cal2Render();
+});
+document.getElementById('cal2-view-month')?.addEventListener('click', ()=>{
+  CAL2_CURRENT_VIEW = 'month';
+  cal2SyncViewButtons();
+  cal2Render();
+});
+document.getElementById('cal2-view-year')?.addEventListener('click', ()=>{
+  CAL2_CURRENT_VIEW = 'year';
+  cal2SyncViewButtons();
+  cal2Render();
+});
+document.getElementById('cal2-filter-toggle')?.addEventListener('click', ()=>{
+  const input = document.getElementById('cal2-filter-input');
+  if(!input) return;
+  const visible = input.style.display !== 'none';
+  if(visible){
+    input.style.display = 'none';
+    input.value = '';
+    cal2Render();
+  }else{
+    input.style.display = '';
+    input.focus();
+  }
+});
+document.getElementById('cal2-filter-input')?.addEventListener('input', ()=>{
+  cal2Render();
+});
+
+/* Botón Únete: abre enlace del calendario de Google */
+document.getElementById('cal2-unete')?.addEventListener('click', ()=>{
+  const url = 'https://calendar.google.com/calendar/u/0?cid=ZDgyZjI1Nzg1MzQxOGM3YWY1ZDgyOWY1YmFhNWQ0NzYwYmJjYTQwZDRkNzg3OGM0NDkyOTEyNGI5NTY1ZDZkNkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t';
+  window.open(url, '_blank', 'noopener');
+});
 
   </script>
 </body>
