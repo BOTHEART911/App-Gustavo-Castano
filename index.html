@@ -2459,7 +2459,7 @@ function stopLoading(){
         telefono: document.getElementById('reg-telefono').value.trim(),
         residencia: document.getElementById('reg-residencia').value.trim(),
         zona: document.getElementById('reg-zona').value.trim(),
-        referencia: (document.getElementById('reg-referencia').value || '').trim()
+        referencia: ((document.getElementById('reg-referencia').value || '').trim() || 'N/A')
       };
       const documentoRegex = /^(?:[0-9]{6,9}|1[0-9]{9})$/;
       const telefonoRegex = /^[0-9]{10}$/;
@@ -3330,7 +3330,7 @@ document.getElementById('v-guardar').addEventListener('click', async ()=>{
         telefono: document.getElementById('upd-telefono').value.trim(),
         residencia: document.getElementById('upd-residencia').value,
         zona: document.getElementById('upd-zona').value.trim(),
-        referencia: document.getElementById('upd-referencia').value.trim()
+        referencia: ((document.getElementById('upd-referencia').value || '').trim() || 'N/A')
       };
       const documentoRegex = /^[0-9]{6,10}$/;
       const telefonoRegex = /^[0-9]{10}$/;
