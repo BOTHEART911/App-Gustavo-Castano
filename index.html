@@ -519,15 +519,6 @@
 .view > *:first-child{ margin-top: 0 !important; }
 .view > *:last-child{ margin-bottom: 0 !important; }
 
-/* Opcional: si quieres limitarlo sólo a las vistas mencionadas
-#view-menu > *:first-child,
-#view-sede > *:first-child,
-#view-redes > *:first-child{ margin-top: 0 !important; }
-#view-menu > *:last-child,
-#view-sede > *:last-child,
-#view-redes > *:last-child{ margin-bottom: 0 !important; }
-*/
-
 /* Panel lateral (menú deslizable): sin espacio “muerto” abajo/arriba */
 .overlay .panel{
   padding-top: 16px;
@@ -666,6 +657,25 @@
 .notif-label.active{ display:inline-block; }
 
   .notif-label{ cursor: pointer; }
+
+  /* Badge del botón "Ponte al día" en el menú lateral */
+.menu-btn{ position:relative; }
+.btn-badge{
+  position:absolute; right:-6px; top:-6px;
+  background:#e11; color:#fff; border-radius:999px;
+  min-width:18px; height:18px; line-height:18px; text-align:center;
+  padding:0 4px; font-size:12px; font-weight:800; display:none;
+  box-shadow: 0 0 0 2px #fff;
+}
+.btn-badge.active{ display:inline-block; }
+.notif-label.active{ display:inline-block; }
+
+/* Evitar desbordes en detalle (URLs y palabras largas) */
+.feed-detail-desc{
+  overflow-wrap:anywhere;
+  word-break:break-word;
+  max-width:100%;
+}
 
   /* ==== LIBRETA DE CONTACTOS ==== */
 .contact-list{
